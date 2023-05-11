@@ -1,4 +1,4 @@
-package matachi.mapeditor;
+package src.matachi.mapeditor;
 
 import matachi.mapeditor.editor.Controller;
 
