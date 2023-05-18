@@ -200,33 +200,37 @@ public class PacActor extends Actor implements GGKeyRepeatListener
       return true;
   }
 
-  public int getNbPills() {
-    return nbPills;
-  }
 
   private void eatPill(Location location)
   {
     Color c = getBackground().getColor(location);
     if (c.equals(Color.white))
     {
-      nbPills++;
-      score++;
-      getBackground().fillCell(location, Color.lightGray);
-      game.getGameCallback().pacManEatPillsAndItems(location, "pills");
+      Item pill = game.findItem("pills", location);
+      if (pill != null) {pill.eat(this);}
     } else if (c.equals(Color.yellow)) {
-      nbPills++;
-      score+= 5;
-      getBackground().fillCell(location, Color.lightGray);
-      game.getGameCallback().pacManEatPillsAndItems(location, "gold");
-      game.removeItem("gold",location);
+      Item gold = game.findItem("gold",location);
+      if (gold != null) {gold.eat(this);}
     } else if (c.equals(Color.blue)) {
-      getBackground().fillCell(location, Color.lightGray);
-      game.getGameCallback().pacManEatPillsAndItems(location, "ice");
-      game.removeItem("ice",location);
+      Item ice = game.findItem("ice",location);
+      if (ice != null) {ice.eat(this);}
     }
     String title = "[PacMan in the Multiverse] Current score: " + score;
     gameGrid.setTitle(title);
   }
 
+
+  // --- Getters & Setters ---
+  public int getNbPills() {
+    return nbPills;
+  }
+
+  public void addScore(int i) {
+    this.score += i;
+  }
+
+  public void incrementNbPills() {
+    this.nbPills ++;
+  }
 
 }
