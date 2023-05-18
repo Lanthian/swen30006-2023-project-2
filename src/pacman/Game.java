@@ -1,9 +1,7 @@
-// PacMan.java
-// Simple PacMan implementation
-package pacman;
+package src;
 
 import ch.aplu.jgamegrid.*;
-import pacman.utility.GameCallback;
+import src.utility.GameCallback;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,18 +14,23 @@ public class Game extends GameGrid
   protected PacManGameGrid grid = new PacManGameGrid(nbHorzCells, nbVertCells);
 
   protected PacActor pacActor = new PacActor(this);
-  private Monster troll = new Monster(this, MonsterType.Troll);
-  private Monster tx5 = new Monster(this, MonsterType.TX5);
-
+  private Monster troll = new TrollMonster(this, MonsterType.Troll);
+  private Monster tx5 = new TX5Monster(this, MonsterType.TX5);
+  private ArrayList<Monster> monsters = new ArrayList<>();
 
   private ArrayList<Location> pillAndItemLocations = new ArrayList<Location>();
-  private ArrayList<Actor> iceCubes = new ArrayList<Actor>();
-  private ArrayList<Actor> goldPieces = new ArrayList<Actor>();
+  private ArrayList<Ice> iceCubes = new ArrayList<Ice>();
+  public ArrayList<Gold> getGoldPieces() {
+    return goldPieces;
+  }
+  private ArrayList<Gold> goldPieces = new ArrayList<Gold>();
+  private ArrayList<Pill> pills = new ArrayList<Pill>();
+
   private GameCallback gameCallback;
   private Properties properties;
   private int seed = 30006;
   private ArrayList<Location> propertyPillLocations = new ArrayList<>();
-  private ArrayList<Location> propertyGoldLocations = new ArrayList<>();
+  private static ArrayList<Location> propertyGoldLocations = new ArrayList<>();
 
   public Game(GameCallback gameCallback, Properties properties)
   {
@@ -36,7 +39,7 @@ public class Game extends GameGrid
     this.gameCallback = gameCallback;
     this.properties = properties;
     setSimulationPeriod(100);
-    setTitle("[PacMan in the Multiverse]");
+    setTitle("[PacMan in the TorusVerse]");
 
     //Setup for auto test
     pacActor.setPropertyMoves(properties.getProperty("PacMan.move"));
@@ -46,16 +49,25 @@ public class Game extends GameGrid
     GGBackground bg = getBg();
     drawGrid(bg);
 
-    //Setup Random seeds
+    // Setup Random seeds and speed for pacActor
     seed = Integer.parseInt(properties.getProperty("seed"));
     pacActor.setSeed(seed);
-    troll.setSeed(seed);
-    tx5.setSeed(seed);
+    pacActor.setSlowDown(3);
+
+    // Monster array just to reduce redundant code below
+    this.monsters.add(troll);
+    this.monsters.add(tx5);
+
+    // Set monster seeds and speeds
+    for (Monster monster : this.monsters) {
+      monster.setSeed(seed);
+      monster.setSlowDown(3);
+    }
+
+    // Set pacActor movement and other monster uniques
     addKeyRepeatListener(pacActor);
     setKeyRepeatPeriod(150);
-    troll.setSlowDown(3);
-    tx5.setSlowDown(3);
-    pacActor.setSlowDown(3);
+
     tx5.stopMoving(5);
     setupActorLocations();
 
@@ -66,22 +78,26 @@ public class Game extends GameGrid
     show();
     // Loop to look for collision in the application thread
     // This makes it improbable that we miss a hit
-    boolean hasPacmanBeenHit;
+    boolean hasPacmanBeenHit = false;
     boolean hasPacmanEatAllPills;
     setupPillAndItemsLocations();
     int maxPillsAndItems = countPillsAndItems();
-    
+
     do {
-      hasPacmanBeenHit = troll.getLocation().equals(pacActor.getLocation()) ||
-              tx5.getLocation().equals(pacActor.getLocation());
+      Location pacLocation = pacActor.getLocation();
+      // Iterate through monster list to check if collision has occurred
+      for (Monster monster : monsters) {
+        if (monster.getLocation().equals(pacLocation)) hasPacmanBeenHit = true;
+      }
       hasPacmanEatAllPills = pacActor.getNbPills() >= maxPillsAndItems;
       delay(10);
     } while(!hasPacmanBeenHit && !hasPacmanEatAllPills);
     delay(120);
 
     Location loc = pacActor.getLocation();
-    troll.setStopMoving(true);
-    tx5.setStopMoving(true);
+    for (Monster monster : monsters) {
+      monster.setStopMoving(true);
+    }
     pacActor.removeSelf();
 
     String title = "";
@@ -99,26 +115,25 @@ public class Game extends GameGrid
     doPause();
   }
 
-  public GameCallback getGameCallback() {
-    return gameCallback;
-  }
-
   private void setupActorLocations() {
-    String[] trollLocations = this.properties.getProperty("Troll.location").split(",");
-    String[] tx5Locations = this.properties.getProperty("TX5.location").split(",");
+    // Read in location of PacMan actor
     String[] pacManLocations = this.properties.getProperty("PacMan.location").split(",");
-    int trollX = Integer.parseInt(trollLocations[0]);
-    int trollY = Integer.parseInt(trollLocations[1]);
-
-    int tx5X = Integer.parseInt(tx5Locations[0]);
-    int tx5Y = Integer.parseInt(tx5Locations[1]);
-
     int pacManX = Integer.parseInt(pacManLocations[0]);
     int pacManY = Integer.parseInt(pacManLocations[1]);
 
-    addActor(troll, new Location(trollX, trollY), Location.NORTH);
+    // Read in locations of all monsters, even if not used
+    ArrayList<int[]> locationTuples = new ArrayList<>();
+    for (int i=0; i<MonsterType.values().length; i++) {
+      String[] locations = this.properties.getProperty(MonsterType.values()[i].name()+".location").split(",");
+      locationTuples.add(new int[]{Integer.parseInt(locations[0]), Integer.parseInt(locations[1])});
+    }
+
+    // Add pacActor and desired monsters
     addActor(pacActor, new Location(pacManX, pacManY));
-    addActor(tx5, new Location(tx5X, tx5Y), Location.NORTH);
+    int X = 0, Y = 1;
+    for (int i=0; i<this.monsters.size(); i++) {
+      addActor(this.monsters.get(i), new Location(locationTuples.get(i)[X], locationTuples.get(i)[Y]), Location.NORTH);
+    }
   }
 
   private int countPillsAndItems() {
@@ -147,11 +162,6 @@ public class Game extends GameGrid
     return pillsAndItemsCount;
   }
 
-  public ArrayList<Location> getPillAndItemLocations() {
-    return pillAndItemLocations;
-  }
-
-
   private void loadPillAndItemsLocations() {
     String pillsLocationString = properties.getProperty("Pills.location");
     if (pillsLocationString != null) {
@@ -171,6 +181,7 @@ public class Game extends GameGrid
       }
     }
   }
+
   private void setupPillAndItemsLocations() {
     for (int y = 0; y < nbVertCells; y++)
     {
@@ -211,70 +222,77 @@ public class Game extends GameGrid
     {
       for (int x = 0; x < nbHorzCells; x++)
       {
-        bg.setPaintColor(Color.white);
         Location location = new Location(x, y);
         int a = grid.getCell(location);
         if (a > 0)
           bg.fillCell(location, Color.lightGray);
         if (a == 1 && propertyPillLocations.size() == 0) { // Pill
-          putPill(bg, location);
+          this.pills.add(new Pill(this, bg, location));
         } else if (a == 3 && propertyGoldLocations.size() == 0) { // Gold
-          putGold(bg, location);
+          this.goldPieces.add(new Gold(this, bg, location));
         } else if (a == 4) {
-          putIce(bg, location);
+          this.iceCubes.add(new Ice(this, bg, location));
         }
       }
     }
 
     for (Location location : propertyPillLocations) {
-      putPill(bg, location);
+      this.pills.add(new Pill(this, bg, location));
     }
 
     for (Location location : propertyGoldLocations) {
-      putGold(bg, location);
+      this.goldPieces.add(new Gold(this, bg, location));
     }
   }
 
-  private void putPill(GGBackground bg, Location location){
-    bg.fillCircle(toPoint(location), 5);
-  }
 
-  private void putGold(GGBackground bg, Location location){
-    bg.setPaintColor(Color.yellow);
-    bg.fillCircle(toPoint(location), 5);
-    Actor gold = new Actor("sprites/gold.png");
-    this.goldPieces.add(gold);
-    addActor(gold, location);
-  }
+  /**
+   * Searches a location for a specific kind of item.
+   * @param type A string of type {pills, gold, ice} that determines the item
+   *             type searched for.
+   * @param location The Location searched for desired item.
+   * @return null if not found, desired Item if found.
+   */
+  public Item findItem(String type,Location location) {
+    ArrayList<Item> items = new ArrayList<>();
+    switch (type) {
+      case "pills":
+        items.addAll(this.pills);
+        break;
+      case "gold":
+        items.addAll(this.goldPieces);
+        break;
+      case "ice":
+        items.addAll(this.iceCubes);
+        break;
+      default:
+        // Desired type unknown
+        return null;
+    }
 
-  private void putIce(GGBackground bg, Location location){
-    bg.setPaintColor(Color.blue);
-    bg.fillCircle(toPoint(location), 5);
-    Actor ice = new Actor("sprites/ice.png");
-    this.iceCubes.add(ice);
-    addActor(ice, location);
-  }
-
-  public void removeItem(String type,Location location){
-    if(type.equals("gold")){
-      for (Actor item : this.goldPieces){
-        if (location.getX() == item.getLocation().getX() && location.getY() == item.getLocation().getY()) {
-          item.hide();
-        }
-      }
-    }else if(type.equals("ice")){
-      for (Actor item : this.iceCubes){
-        if (location.getX() == item.getLocation().getX() && location.getY() == item.getLocation().getY()) {
-          item.hide();
-        }
+    // Search for item of type at given location
+    for (Item item : items) {
+      if (location.equals(item.getLocation())) {
+        return item;
       }
     }
+
+    // Otherwise, item not found -- return null
+    return null;
   }
 
+  // -- Getters --
+  public GameCallback getGameCallback() {
+    return gameCallback;
+  }
+  public ArrayList<Location> getPillAndItemLocations() {
+    return pillAndItemLocations;
+  }
   public int getNumHorzCells(){
     return this.nbHorzCells;
   }
   public int getNumVertCells(){
     return this.nbVertCells;
   }
+
 }
