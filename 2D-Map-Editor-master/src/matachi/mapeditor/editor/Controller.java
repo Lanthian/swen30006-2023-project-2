@@ -71,7 +71,7 @@ public class Controller implements ActionListener, GUIInformation {
 				Constants.GRID_HEIGHT);
 
 		grid = new GridView(this, camera, tiles); // Every tile is
-													// 30x30 pixels
+		// 30x30 pixels
 
 		this.view = new View(this, camera, grid, tiles);
 	}
@@ -96,6 +96,9 @@ public class Controller implements ActionListener, GUIInformation {
 			loadFile();
 		} else if (e.getActionCommand().equals("update")) {
 			updateGrid(gridWith, gridHeight);
+		} else if (e.getActionCommand().equals("start_game")) {
+			// todo
+			System.out.println("Lmao - we didn't give you this code B---)");
 		}
 	}
 
