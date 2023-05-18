@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="JGameGrid">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/pacman/lib/JGameGrid.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/JGameGrid.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
