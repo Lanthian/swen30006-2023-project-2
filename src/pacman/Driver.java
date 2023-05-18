@@ -1,12 +1,12 @@
-package src;
+package pacman;
 
-import src.utility.GameCallback;
-import src.utility.PropertiesLoader;
+import pacman.utility.GameCallback;
+import pacman.utility.PropertiesLoader;
 
 import java.util.Properties;
 
 public class Driver {
-    public static final String DEFAULT_PROPERTIES_PATH = "pacman/properties/test2.properties";
+    public static final String DEFAULT_PROPERTIES_PATH = "properties/test2.properties";
 
     /**
      * Starting point

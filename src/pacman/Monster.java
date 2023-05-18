@@ -1,6 +1,6 @@
 // Monster.java
 // Used for PacMan
-package src;
+package pacman;
 
 import ch.aplu.jgamegrid.*;
 import java.awt.Color;

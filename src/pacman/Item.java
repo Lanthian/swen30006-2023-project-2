@@ -1,5 +1,5 @@
 // Item.java
-package src;
+package pacman;
 
 import ch.aplu.jgamegrid.Actor;
 import ch.aplu.jgamegrid.GGBackground;

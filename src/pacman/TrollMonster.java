@@ -1,4 +1,4 @@
-package src;
+package pacman;
 
 import ch.aplu.jgamegrid.Location;
 

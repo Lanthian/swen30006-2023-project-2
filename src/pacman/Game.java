@@ -1,7 +1,7 @@
-package src;
+package pacman;
 
 import ch.aplu.jgamegrid.*;
-import src.utility.GameCallback;
+import pacman.utility.GameCallback;
 
 import java.awt.*;
 import java.util.ArrayList;

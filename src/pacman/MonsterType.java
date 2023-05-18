@@ -1,4 +1,4 @@
-package src;
+package pacman;
 
 public enum MonsterType {
     Troll,
