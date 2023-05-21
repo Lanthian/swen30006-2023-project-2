@@ -12,6 +12,9 @@ import java.util.Random;
 
 public class PacActor extends Actor implements GGKeyRepeatListener
 {
+  // Singleton instance
+  private static PacActor singleton = null;
+
   private static final int nbSprites = 4;
   private int idSprite = 0;
   private int nbPills = 0;
@@ -23,11 +26,22 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   private final int listLength = 10;
   private int seed;
   private Random randomiser = new Random();
-  public PacActor(Game game)
-  {
-    super(true, "sprites/pacpix.gif", nbSprites);  // Rotatable
-    this.game = game;
+
+  // Constructor
+  private PacActor() {
+    super(true, "sprites/pacpix.gif", nbSprites);   // Rotatable
   }
+
+  // Singleton retriever
+  public static PacActor getPacActor(Game game)
+  {
+    if (singleton == null) {
+      singleton = new PacActor();
+    }
+    singleton.setGame((game));
+    return singleton;
+  }
+
   private boolean isAuto = false;
 
   public void setAuto(boolean auto) {
@@ -233,4 +247,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     this.nbPills ++;
   }
 
+  private void setGame(Game game) {
+    singleton.game = game;
+  }
 }

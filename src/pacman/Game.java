@@ -13,7 +13,7 @@ public class Game extends GameGrid
   private final static int nbVertCells = 11;
   protected PacManGameGrid grid = new PacManGameGrid(nbHorzCells, nbVertCells);
 
-  protected PacActor pacActor = new PacActor(this);
+  protected PacActor pacActor = PacActor.getPacActor(this);
   private Monster troll = new TrollMonster(this, MonsterType.Troll);
   private Monster tx5 = new TX5Monster(this, MonsterType.TX5);
   private ArrayList<Monster> monsters = new ArrayList<>();
