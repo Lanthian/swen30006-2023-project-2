@@ -92,8 +92,8 @@ public class Controller implements ActionListener, GUIInformation {
 			String[] temp;
 			temp = new String[0];
 //			temp = DEFAULT_PROPERTIES_PATH;
+			// todo todo todo todo
 			driver.main(temp);
-			System.out.println("Lmao - we didn't give you this code B---)");
 		}
 	}
 
