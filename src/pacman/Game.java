@@ -14,13 +14,12 @@ public class Game extends GameGrid
   protected PacManGameGrid grid = new PacManGameGrid(nbHorzCells, nbVertCells);
 
   protected PacActor pacActor = PacActor.getPacActor(this);
+  private ArrayList<IsCollidable> collidables = new ArrayList<>();
+
   private ArrayList<Monster> monsters = new ArrayList<>();
 
   private ArrayList<Location> pillAndItemLocations = new ArrayList<Location>();
   private ArrayList<Ice> iceCubes = new ArrayList<Ice>();
-  public ArrayList<Gold> getGoldPieces() {
-    return goldPieces;
-  }
   private ArrayList<Gold> goldPieces = new ArrayList<Gold>();
   private ArrayList<Pill> pills = new ArrayList<Pill>();
 
@@ -63,6 +62,10 @@ public class Game extends GameGrid
 
     setupActorLocations();
 
+    collidables.addAll(pills);
+    collidables.addAll(goldPieces);
+    collidables.addAll(iceCubes);
+
 
     //Run the game
     doRun();
@@ -77,9 +80,7 @@ public class Game extends GameGrid
       Location pacLocation = pacActor.getLocation();
       // Iterate through monster list to check if collision has occurred
       for (Monster monster : monsters) {
-        if (monster.hasCollided(pacActor)) {
-          monster.enactCollision(pacActor);
-        }
+        monster.checkAndCollide(pacActor);
       }
       hasPacmanEatAllPills = pacActor.getNbPills() >= maxPillsAndItems;
       delay(10);
@@ -244,6 +245,14 @@ public class Game extends GameGrid
     }
   }
 
+  public void updatePlayer() {
+    for (IsCollidable element : collidables) {
+      element.checkAndCollide(pacActor);
+    }
+    String title = "[PacMan in the Multiverse] Current score: " + pacActor.getScore();
+    setTitle(title);
+  }
+
 
   /**
    * Searches a location for a specific kind of item.
@@ -274,6 +283,7 @@ public class Game extends GameGrid
       if (location.equals(item.getLocation())) {
         return item;
       }
+
     }
 
     // Otherwise, item not found -- return null

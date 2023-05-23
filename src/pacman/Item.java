@@ -7,7 +7,7 @@ import ch.aplu.jgamegrid.Location;
 
 import java.awt.*;
 
-public abstract class Item extends Actor {
+public abstract class Item extends Actor implements IsCollidable {
     // --- Attributes & Constants ---
     private final static int RADIUS = 5;
     private final static Color NO_ITEM = Color.lightGray;
@@ -40,6 +40,12 @@ public abstract class Item extends Actor {
         }
     }
 
+    @Override
+    public void checkAndCollide(PacActor pacActor) {
+        if (this.getLocation().equals(pacActor.getLocation())) {
+            this.eat(pacActor);
+        }
+    }
 
     /**
      * Performs eat operation on a given, extended Item. O

@@ -92,7 +92,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     if (next != null && canMove(next))
     {
       setLocation(next);
-      eatPill(next);
+      game.updatePlayer();
     }
   }
 
@@ -137,7 +137,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
         Location next = getNextMoveLocation();
         if (canMove(next)) {
           setLocation(next);
-          eatPill(next);
+          game.updatePlayer();
         }
         break;
     }
@@ -187,7 +187,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
         }
       }
     }
-    eatPill(next);
+    game.updatePlayer();
     addVisitedList(next);
   }
 
@@ -217,23 +217,23 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   }
 
 
-  private void eatPill(Location location)
-  {
-    Color c = getBackground().getColor(location);
-    if (c.equals(Color.white))
-    {
-      Item pill = game.findItem("pills", location);
-      if (pill != null) {pill.eat(this);}
-    } else if (c.equals(Color.yellow)) {
-      Item gold = game.findItem("gold",location);
-      if (gold != null) {gold.eat(this);}
-    } else if (c.equals(Color.blue)) {
-      Item ice = game.findItem("ice",location);
-      if (ice != null) {ice.eat(this);}
-    }
-    String title = "[PacMan in the Multiverse] Current score: " + score;
-    gameGrid.setTitle(title);
-  }
+//  private void eatPill(Location location)
+//  {
+//    Color c = getBackground().getColor(location);
+//    if (c.equals(Color.white))
+//    {
+//      Item pill = game.findItem("pills", location);
+//      if (pill != null) {pill.eat(this);}
+//    } else if (c.equals(Color.yellow)) {
+//      Item gold = game.findItem("gold",location);
+//      if (gold != null) {gold.eat(this);}
+//    } else if (c.equals(Color.blue)) {
+//      Item ice = game.findItem("ice",location);
+//      if (ice != null) {ice.eat(this);}
+//    }
+//    String title = "[PacMan in the Multiverse] Current score: " + score;
+//    gameGrid.setTitle(title);
+//  }
 
 
   // --- Getters & Setters ---
@@ -260,5 +260,9 @@ public class PacActor extends Actor implements GGKeyRepeatListener
 
   public void loseGame() {
     singleton.gameState = GameState.Lose;
+  }
+
+  public int getScore() {
+    return this.score;
   }
 }

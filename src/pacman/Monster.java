@@ -6,7 +6,7 @@ import ch.aplu.jgamegrid.*;
 import java.awt.Color;
 import java.util.*;
 
-public abstract class Monster extends Actor implements Collidable
+public abstract class Monster extends Actor implements IsCollidable
 {
   protected Game game;
   protected MonsterType type;
@@ -89,14 +89,13 @@ public abstract class Monster extends Actor implements Collidable
       return true;
   }
 
-  // Collidable interface functions
+  // All monster collisions end the same way
   @Override
-  public boolean hasCollided(PacActor pacActor) {
-    return this.getLocation().equals(pacActor.getLocation());
-  }
-
-  @Override
-  public void enactCollision(PacActor pacActor) {
-    pacActor.loseGame();
+  public void checkAndCollide(PacActor pacActor) {
+    // Check for collision
+    if (this.getLocation().equals(pacActor.getLocation())) {
+      pacActor.loseGame();
+    }
+    // Otherwise no collision, do nothing
   }
 }

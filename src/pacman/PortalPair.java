@@ -15,10 +15,12 @@ class Portal extends Actor {
         this.type = type;           // Portal type is final
         this.setLocation(loc);      // Location of a portal is final
     }
+
+
 }
 
 
-public class PortalPair {
+public class PortalPair implements IsCollidable {
     // --- Attributes & Constants ---
     private Game game;
     private PortalType type;
@@ -41,6 +43,11 @@ public class PortalPair {
         else if (this.portal2 == null) this.portal2 = new Portal(this.type, loc);
 
         // Otherwise both portals have been set -> do nothing
+    }
+
+    @Override
+    public void checkAndCollide(PacActor pacActor) {
+        System.out.printf("Not implemented");
     }
 }
 
