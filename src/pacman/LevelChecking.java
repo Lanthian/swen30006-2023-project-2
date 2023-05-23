@@ -14,13 +14,15 @@ import java.util.Map;
 
 
 public class LevelChecking {
-    private Map<Location, String> map;
-    private Map<Location, String> items;
-    private Map<Location, String> yellowPortal;
-    private Map<Location, String> whitePortal;
-    private Map<Location, String> darkGoldPortal;
-    private Map<Location, String> darkGreyPortal;
-    private Map<Location, String> pacStart;
+    private final Map<Location, String> map;
+    private final Map<Location, String> items;
+    private final Map<Location, String> yellowPortal;
+    private final Map<Location, String> whitePortal;
+    private final Map<Location, String> darkGoldPortal;
+    private final Map<Location, String> darkGreyPortal;
+    private final Map<Location, String> pacStart;
+    private int width;
+    private int height;
 
     public LevelChecking() {
         map = new HashMap<>();
@@ -32,7 +34,6 @@ public class LevelChecking {
         pacStart = new HashMap<>();
     }
 
-
     public void check() {
         try {
             // Create a DocumentBuilder
@@ -43,11 +44,16 @@ public class LevelChecking {
             File file = new File("test/sample_map1.xml");
             Document doc = builder.parse(file);
 
-            // Get root element
-            Element root = doc.getDocumentElement();
+            // Get level element
+            Element level = doc.getDocumentElement();
+
+            // Read size element and get width and height
+            Element sizeElement = (Element) level.getElementsByTagName("size").item(0);
+            width = Integer.parseInt(sizeElement.getElementsByTagName("width").item(0).getTextContent());
+            height = Integer.parseInt(sizeElement.getElementsByTagName("height").item(0).getTextContent());
 
             // Read row
-            NodeList rowList = root.getElementsByTagName("row");
+            NodeList rowList = level.getElementsByTagName("row");
             for (int i = 0; i < rowList.getLength(); i++) {
                 Element rowElement = (Element) rowList.item(i);
 
@@ -69,27 +75,34 @@ public class LevelChecking {
     }
 
     private void elementAdder(Location loc, String element){
-        if (element.equals("PacTile")) {
-            map.put(loc, element);
-            pacStart.put(loc, element);
-        } else if (element.equals("PortalWhiteTile")) {
-            map.put(loc, element);
-            whitePortal.put(loc, element);
-        } else if (element.equals("PortalDarkGrayTile")) {
-            map.put(loc, element);
-            darkGreyPortal.put(loc, element);
-        } else if (element.equals("PortalDarkGoldTile")) {
-            map.put(loc, element);
-            darkGoldPortal.put(loc, element);
-        } else if (element.equals("PortalYellowTile")) {
-            map.put(loc, element);
-            yellowPortal.put(loc, element);
-        } else if (element.equals("PillTile") || element.equals("GoldTile")) {
-            map.put(loc, element);
-            items.put(loc, element);
-        } else if (element.equals("WallTile")){
-            map.put(loc, element);
+        switch (element) {
+            case "PacTile" -> {
+                map.put(loc, element);
+                pacStart.put(loc, element);
+            }
+            case "PortalWhiteTile" -> {
+                map.put(loc, element);
+                whitePortal.put(loc, element);
+            }
+            case "PortalDarkGrayTile" -> {
+                map.put(loc, element);
+                darkGreyPortal.put(loc, element);
+            }
+            case "PortalDarkGoldTile" -> {
+                map.put(loc, element);
+                darkGoldPortal.put(loc, element);
+            }
+            case "PortalYellowTile" -> {
+                map.put(loc, element);
+                yellowPortal.put(loc, element);
+            }
+            case "PillTile", "GoldTile" -> {
+                map.put(loc, element);
+                items.put(loc, element);
+            }
+            case "WallTile" -> map.put(loc, element);
         }
+
     }
 
     private void validityCheck(String filename){
@@ -141,5 +154,13 @@ public class LevelChecking {
 
     public Map<Location, String> getMap(){
         return this.map;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }
