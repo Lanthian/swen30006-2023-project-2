@@ -15,7 +15,7 @@ public class Map {
 
     // Constructor - todo
     public Map() {
-        this.width = 21;
+        this.width = 20;
         this.height = 11;
     }
 
