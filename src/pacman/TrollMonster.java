@@ -32,9 +32,11 @@ public class TrollMonster extends Monster {
         turn(sign * 90);  // Try to turn left/right
         next = getNextMoveLocation();
 
+        boolean toMove = false;
+
         if (canMove(next))
         {
-            setLocation(next);
+            toMove = true;
         }
         else
         {
@@ -43,7 +45,7 @@ public class TrollMonster extends Monster {
             // (Double step distance if frenzied)
             if (canMove((next))) // Try to move forward
             {
-                setLocation(next);
+                toMove = true;
             }
             else
             {
@@ -51,7 +53,7 @@ public class TrollMonster extends Monster {
                 next = getNextMoveLocation();
                 if (canMove(next))
                 {
-                    setLocation(next);
+                    toMove = true;
                 }
                 else
                 {
@@ -60,7 +62,7 @@ public class TrollMonster extends Monster {
                     next = getNextMoveLocation();
 
                     if (canMove(next)) {
-                        setLocation(next);
+                        toMove=true;
                     }
                     else {
                         // No possible moves - do not move.
@@ -69,6 +71,12 @@ public class TrollMonster extends Monster {
                 }
             }
         }
+        // Make move if valid and desired step found
+        if (toMove) {
+            setLocation(next);
+            game.updateActor(this, ActorType.Monster);
+        }
+
         return next;
     }
 }

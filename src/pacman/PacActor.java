@@ -92,7 +92,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     if (next != null && canMove(next))
     {
       setLocation(next);
-      game.updatePlayer();
+      game.updateActor(this, ActorType.Player);
     }
   }
 
@@ -137,7 +137,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
         Location next = getNextMoveLocation();
         if (canMove(next)) {
           setLocation(next);
-          game.updatePlayer();
+          game.updateActor(this, ActorType.Player);
         }
         break;
     }
@@ -187,7 +187,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
         }
       }
     }
-    game.updatePlayer();
+    game.updateActor(this, ActorType.Player);
     addVisitedList(next);
   }
 
@@ -215,26 +215,6 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     else
       return true;
   }
-
-
-//  private void eatPill(Location location)
-//  {
-//    Color c = getBackground().getColor(location);
-//    if (c.equals(Color.white))
-//    {
-//      Item pill = game.findItem("pills", location);
-//      if (pill != null) {pill.eat(this);}
-//    } else if (c.equals(Color.yellow)) {
-//      Item gold = game.findItem("gold",location);
-//      if (gold != null) {gold.eat(this);}
-//    } else if (c.equals(Color.blue)) {
-//      Item ice = game.findItem("ice",location);
-//      if (ice != null) {ice.eat(this);}
-//    }
-//    String title = "[PacMan in the Multiverse] Current score: " + score;
-//    gameGrid.setTitle(title);
-//  }
-
 
   // --- Getters & Setters ---
   public int getNbPills() {
