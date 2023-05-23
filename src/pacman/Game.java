@@ -29,7 +29,7 @@ public class Game extends GameGrid
   private ArrayList<Location> propertyPillLocations = new ArrayList<>();
   private static ArrayList<Location> propertyGoldLocations = new ArrayList<>();
 
-  public Game(GameCallback gameCallback, Properties properties)
+  public Game(ArrayList<Map> maps, GameCallback gameCallback, Properties properties)
   {
     //Setup game
     super(nbHorzCells, nbVertCells, 20, false);
@@ -48,6 +48,7 @@ public class Game extends GameGrid
 
     // Setup Random seeds and speed for pacActor
     seed = Integer.parseInt(properties.getProperty("seed"));
+
     pacActor.setSeed(seed);
     pacActor.setSlowDown(3);
 
