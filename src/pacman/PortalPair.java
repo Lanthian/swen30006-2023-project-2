@@ -22,8 +22,8 @@ public class PortalPair {
     // --- Attributes & Constants ---
     private Game game;
     private PortalType type;
-    private Portal portal1;
-    private Portal portal2;
+    public Portal portal1;
+    public Portal portal2;
 
     // --- Constructor ---
     public PortalPair(Game game, PortalType type) {

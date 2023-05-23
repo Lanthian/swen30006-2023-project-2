@@ -72,7 +72,6 @@ public class Game extends GameGrid
     setupActorLocations();
 
 
-
     //Run the game
     doRun();
     show();
@@ -134,6 +133,13 @@ public class Game extends GameGrid
     for (int i=0; i<this.monsters.size(); i++) {
       addActor(this.monsters.get(i), new Location(locationTuples.get(i)[X], locationTuples.get(i)[Y]), Location.NORTH);
     }
+
+    // Add portals
+    PortalPair golds = new PortalPair(this, PortalType.DarkGold);
+    golds.placePortal(new Location(2, 2));
+    golds.placePortal(new Location(4, 4));
+    addActor(golds.portal1, golds.portal1.getLocation());
+    addActor(golds.portal2, golds.portal2.getLocation());
   }
 
   private int countPillsAndItems() {
@@ -293,6 +299,9 @@ public class Game extends GameGrid
   }
   public int getNumVertCells(){
     return this.nbVertCells;
+  }
+  public int getSeed() {
+    return this.seed;
   }
 
 }
