@@ -16,6 +16,8 @@ public class Game extends GameGrid
   private ArrayList<ActorCollidable> collidables = new ArrayList<>();
 
   private ArrayList<Monster> monsters = new ArrayList<>();
+  private ArrayList<Item> items = new ArrayList<>();
+  private ArrayList<PortalPair> portalPairs = new ArrayList<>();
 
   private ArrayList<Location> pillAndItemLocations = new ArrayList<Location>();
   private ArrayList<Ice> iceCubes = new ArrayList<Ice>();
@@ -37,13 +39,47 @@ public class Game extends GameGrid
     setSimulationPeriod(100);
     setTitle("[PacMan in the TorusVerse]");
 
-    //Setup for auto test
-    pacActor.setPropertyMoves(properties.getProperty("PacMan.move"));
-    pacActor.setAuto(Boolean.parseBoolean(properties.getProperty("PacMan.isAuto")));
-    loadPillAndItemsLocations();
-
+    // Draw initial board
     GGBackground bg = getBg();
     drawGrid(bg);
+
+    // Setup pacman state
+    pacActor.setAuto(Boolean.parseBoolean(properties.getProperty("PacMan.isAuto")));
+    addActor(pacActor, map.getPacLocation());
+
+    // === Load monsters ===
+    // Monster array and factory to reduce redundant code later
+    MonsterFactory mFactory = MonsterFactory.getMonsterFactory();
+    for (Location loc : map.getTrolls()) {
+      Monster troll = mFactory.makeMonster(this, MonsterType.Troll);
+      this.monsters.add(troll);
+      addActor(troll, loc);
+    }
+    for (Location loc : map.getTx5s()) {
+      Monster tx5 = mFactory.makeMonster(this, MonsterType.TX5);
+      this.monsters.add(tx5);
+      addActor(tx5, loc);
+    }
+
+    // === Load items ===
+    for (Location loc : map.getGold()) {
+      Gold gold = new Gold(this, bg, loc);
+      this.items.add(gold);
+    }
+    for (Location loc : map.getPills()) {
+      Pill pill = new Pill(this, bg, loc);
+      this.items.add(pill);
+    }
+    for (Location loc : map.getIce()) {
+      Ice ice = new Ice(this, bg, loc);
+      this.items.add(ice);
+    }
+    this.collidables.addAll(items);
+
+
+
+
+    loadPillAndItemsLocations();
 
     // Setup Random seeds and speed for pacActor
     this.seed = Integer.parseInt(properties.getProperty("seed"));
@@ -51,20 +87,15 @@ public class Game extends GameGrid
     pacActor.setSeed(seed);
     pacActor.setSlowDown(3);
 
-    // Monster array just to reduce redundant code below
-    MonsterFactory mFactory = MonsterFactory.getMonsterFactory();
-    this.monsters.add(mFactory.makeMonster(this, MonsterType.TX5));
-    this.monsters.add(mFactory.makeMonster(this, MonsterType.Troll));
-
     // Set pacActor movement and other monster uniques
     addKeyRepeatListener(pacActor);
     setKeyRepeatPeriod(150);
 
     setupActorLocations();
 
-    collidables.addAll(pills);
-    collidables.addAll(goldPieces);
-    collidables.addAll(iceCubes);
+//    collidables.addAll(pills);
+//    collidables.addAll(goldPieces);
+//    collidables.addAll(iceCubes);
 
 
     //Run the game
@@ -110,23 +141,18 @@ public class Game extends GameGrid
 
   private void setupActorLocations() {
     // Read in location of PacMan actor
-    String[] pacManLocations = this.properties.getProperty("PacMan.location").split(",");
-    int pacManX = Integer.parseInt(pacManLocations[0]);
-    int pacManY = Integer.parseInt(pacManLocations[1]);
 
-    // Read in locations of all monsters, even if not used
-    ArrayList<int[]> locationTuples = new ArrayList<>();
-    for (int i=0; i<MonsterType.values().length; i++) {
-      String[] locations = this.properties.getProperty(MonsterType.values()[i].name()+".location").split(",");
-      locationTuples.add(new int[]{Integer.parseInt(locations[0]), Integer.parseInt(locations[1])});
-    }
+//    // Read in locations of all monsters, even if not used
+//    ArrayList<int[]> locationTuples = new ArrayList<>();
+//    for (int i=0; i<MonsterType.values().length; i++) {
+//      String[] locations = this.properties.getProperty(MonsterType.values()[i].name()+".location").split(",");
+//      locationTuples.add(new int[]{Integer.parseInt(locations[0]), Integer.parseInt(locations[1])});
+//    }
 
-    // Add pacActor and desired monsters
-    addActor(pacActor, new Location(pacManX, pacManY));
-    int X = 0, Y = 1;
-    for (int i=0; i<this.monsters.size(); i++) {
-      addActor(this.monsters.get(i), new Location(locationTuples.get(i)[X], locationTuples.get(i)[Y]), Location.NORTH);
-    }
+//    int X = 0, Y = 1;
+//    for (int i=0; i<this.monsters.size(); i++) {
+//      addActor(this.monsters.get(i), new Location(locationTuples.get(i)[X], locationTuples.get(i)[Y]), Location.NORTH);
+//    }
 
     // Temp Add portals   // todo
     PortalPair golds = new PortalPair(this, PortalType.DarkGold);
@@ -217,33 +243,34 @@ public class Game extends GameGrid
 
   private void drawGrid(GGBackground bg)
   {
-    bg.clear(Color.gray);
-    bg.setPaintColor(Color.white);
-    for (int y = 0; y < nbVertCells; y++)
-    {
-      for (int x = 0; x < nbHorzCells; x++)
-      {
-        Location location = new Location(x, y);
-        int a = grid.getCell(location);
-        if (a > 0)
-          bg.fillCell(location, Color.lightGray);
-        if (a == 1 && propertyPillLocations.size() == 0) { // Pill
-          this.pills.add(new Pill(this, bg, location));
-        } else if (a == 3 && propertyGoldLocations.size() == 0) { // Gold
-          this.goldPieces.add(new Gold(this, bg, location));
-        } else if (a == 4) {
-          this.iceCubes.add(new Ice(this, bg, location));
-        }
-      }
-    }
 
-    for (Location location : propertyPillLocations) {
-      this.pills.add(new Pill(this, bg, location));
-    }
-
-    for (Location location : propertyGoldLocations) {
-      this.goldPieces.add(new Gold(this, bg, location));
-    }
+    bg.clear(Color.lightGray);
+    bg.setPaintColor(Color.gray);
+//    for (int y = 0; y < nbVertCells; y++)
+//    {
+//      for (int x = 0; x < nbHorzCells; x++)
+//      {
+//        Location location = new Location(x, y);
+//        int a = grid.getCell(location);
+//        if (a > 0)
+//          bg.fillCell(location, Color.lightGray);
+//        if (a == 1 && propertyPillLocations.size() == 0) { // Pill
+//          this.pills.add(new Pill(this, bg, location));
+//        } else if (a == 3 && propertyGoldLocations.size() == 0) { // Gold
+//          this.goldPieces.add(new Gold(this, bg, location));
+//        } else if (a == 4) {
+//          this.iceCubes.add(new Ice(this, bg, location));
+//        }
+//      }
+//    }
+//
+//    for (Location location : propertyPillLocations) {
+//      this.pills.add(new Pill(this, bg, location));
+//    }
+//
+//    for (Location location : propertyGoldLocations) {
+//      this.goldPieces.add(new Gold(this, bg, location));
+//    }
   }
 
   public void updateActor(Actor actor, ActorType type) {
@@ -257,42 +284,6 @@ public class Game extends GameGrid
       String title = "[PacMan in the Multiverse] Current score: " + pacActor.getScore();
       setTitle(title);
     }
-  }
-
-
-  /**
-   * Searches a location for a specific kind of item.
-   * @param type A string of type {pills, gold, ice} that determines the item
-   *             type searched for.
-   * @param location The Location searched for desired item.
-   * @return null if not found, desired Item if found.
-   */
-  public Item findItem(String type,Location location) {
-    ArrayList<Item> items = new ArrayList<>();
-    switch (type) {
-      case "pills":
-        items.addAll(this.pills);
-        break;
-      case "gold":
-        items.addAll(this.goldPieces);
-        break;
-      case "ice":
-        items.addAll(this.iceCubes);
-        break;
-      default:
-        // Desired type unknown
-        return null;
-    }
-
-    // Search for item of type at given location
-    for (Item item : items) {
-      if (location.equals(item.getLocation())) {
-        return item;
-      }
-    }
-
-    // Otherwise, item not found -- return null
-    return null;
   }
 
   // -- Getters --

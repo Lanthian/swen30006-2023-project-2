@@ -60,10 +60,10 @@ public class GameMap {
                 // Read cell
                 NodeList cellList = rowElement.getElementsByTagName("cell");
 
-                for (int j = 0; i < cellList.getLength(); j++) {
+                for (int j = 0; j < cellList.getLength(); j++) {
                     Element cellElement = (Element) cellList.item(j);
                     String tileType = cellElement.getTextContent();
-                    Location location = new Location(i,j);
+                    Location location = new Location(j,i);
                     elementAdder(location, tileType);
                 }
             }
@@ -98,7 +98,7 @@ public class GameMap {
             case "TrollTile":
                 this.trolls.add(loc);
                 break;
-            case "Tx5Tile":
+            case "TX5Tile":
                 this.tx5s.add(loc);
                 break;
             case "PortalWhiteTile":
@@ -171,7 +171,6 @@ public class GameMap {
     }
 
 
-
     // -- Getters --
     public int getWidth() {
         return this.width;
@@ -180,4 +179,51 @@ public class GameMap {
         return this.height;
     }
 
+    public boolean isValid() {
+        return validity;
+    }
+
+    public Location getPacLocation() {
+        return pacActors.get(0);
+    }
+
+    public ArrayList<Location> getWalls() {
+        return walls;
+    }
+
+    public ArrayList<Location> getPills() {
+        return pills;
+    }
+
+    public ArrayList<Location> getGold() {
+        return gold;
+    }
+
+    public ArrayList<Location> getIce() {
+        return ice;
+    }
+
+    public ArrayList<Location> getTrolls() {
+        return trolls;
+    }
+
+    public ArrayList<Location> getTx5s() {
+        return tx5s;
+    }
+
+    public ArrayList<Location> getPortalsWhite() {
+        return portalsWhite;
+    }
+
+    public ArrayList<Location> getPortalsDarkGray() {
+        return portalsDarkGray;
+    }
+
+    public ArrayList<Location> getPortalsDarkGold() {
+        return portalsDarkGold;
+    }
+
+    public ArrayList<Location> getPortalsYellow() {
+        return portalsYellow;
+    }
 }

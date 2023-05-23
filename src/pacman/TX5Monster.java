@@ -27,6 +27,7 @@ public class TX5Monster extends TrollMonster {
                 // Isn't visited - relocate TX5 to this location
                 setDirection(pacDirection);
                 setLocation(next);
+                this.game.updateActor(this, ActorType.Monster);
             }
         }
         else {
