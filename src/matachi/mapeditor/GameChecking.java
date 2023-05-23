@@ -17,8 +17,8 @@ public class GameChecking {
         File[] files = folder.listFiles();
         List<String> xmlFiles = new ArrayList<>();
 
-        for (int i = 0; i < files.length; i++) {
-            String filename = files[i].getName();
+        for (File file : files) {
+            String filename = file.getName();
             if (filename.endsWith(".xml") & Character.isDigit(filename.charAt(0))) {
                 xmlFiles.add(filename);
                 System.out.println(filename);
@@ -59,7 +59,6 @@ public class GameChecking {
             duplicates.append(duplicate);
         }
 
-        duplicates.toString();
         return duplicates.toString();
             
     }
