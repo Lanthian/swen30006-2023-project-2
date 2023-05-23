@@ -5,8 +5,11 @@ import pacman.utility.PropertiesLoader;
 
 import java.util.Properties;
 
+import matachi.mapeditor.Main;
+
 public class Driver {
     public static final String DEFAULT_PROPERTIES_PATH = "properties/test1.properties";
+    public static final String TEST = "test/test.xml";
 
     /**
      * Starting point
@@ -15,6 +18,20 @@ public class Driver {
 
     public static void main(String args[]) {
         String propertiesPath = DEFAULT_PROPERTIES_PATH;
+
+
+        // gets input for the startup
+        String input = "";
+        input = TEST;
+        if (args.length > 0) {
+            input = args[0];
+        }
+        String[] inputArray = new String[]{input};
+        // parses input into map editor
+        Main.main(inputArray);
+
+
+
         if (args.length > 0) {
             propertiesPath = args[0];
         }
