@@ -28,7 +28,7 @@ public class Game extends GameGrid
   private ArrayList<Location> propertyPillLocations = new ArrayList<>();
   private static ArrayList<Location> propertyGoldLocations = new ArrayList<>();
 
-  public Game(Map map, GameCallback gameCallback, Properties properties)
+  public Game(GameMap map, GameCallback gameCallback, Properties properties)
   {
     //Setup game
     super(map.getWidth(), map.getHeight(), 20, false);

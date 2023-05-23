@@ -1,6 +1,7 @@
+// GameMap.java
 package pacman;
 
-public class Map {
+public class GameMap {
     // to fill out with loaded in details
     /*
     e.g.
@@ -14,7 +15,7 @@ public class Map {
     private final int height;
 
     // Constructor - todo
-    public Map() {
+    public GameMap() {
         this.width = 20;
         this.height = 11;
     }
