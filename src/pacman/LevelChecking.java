@@ -102,7 +102,6 @@ public class LevelChecking {
             }
             case "WallTile" -> map.put(loc, element);
         }
-
     }
 
     private void validityCheck(String filename){
