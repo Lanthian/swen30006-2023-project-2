@@ -215,7 +215,7 @@ public class Controller implements ActionListener, GUIInformation {
 				chooser.setCurrentDirectory(workingDirectory);
 				int returnVal = chooser.showOpenDialog(null);
 
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
 					return;
 				}
 				selectedFile = chooser.getSelectedFile();
