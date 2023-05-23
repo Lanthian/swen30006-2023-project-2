@@ -15,6 +15,8 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   // Singleton instance
   private static PacActor singleton = null;
 
+  private GameState gameState;
+
   private static final int nbSprites = 4;
   private int idSprite = 0;
   private int nbPills = 0;
@@ -38,7 +40,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     if (singleton == null) {
       singleton = new PacActor();
     }
-    singleton.setGame((game));
+    singleton.setGame(game);
     return singleton;
   }
 
@@ -249,5 +251,14 @@ public class PacActor extends Actor implements GGKeyRepeatListener
 
   private void setGame(Game game) {
     singleton.game = game;
+    singleton.gameState = GameState.Active;
+  }
+
+  public GameState getGameState() {
+    return singleton.gameState;
+  }
+
+  public void loseGame() {
+    singleton.gameState = GameState.Lose;
   }
 }

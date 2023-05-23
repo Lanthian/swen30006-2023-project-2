@@ -6,7 +6,7 @@ import ch.aplu.jgamegrid.*;
 import java.awt.Color;
 import java.util.*;
 
-public abstract class Monster extends Actor
+public abstract class Monster extends Actor implements Collidable
 {
   protected Game game;
   protected MonsterType type;
@@ -89,4 +89,14 @@ public abstract class Monster extends Actor
       return true;
   }
 
+  // Collidable interface functions
+  @Override
+  public boolean hasCollided(PacActor pacActor) {
+    return this.getLocation().equals(pacActor.getLocation());
+  }
+
+  @Override
+  public void enactCollision(PacActor pacActor) {
+    pacActor.loseGame();
+  }
 }

@@ -69,7 +69,6 @@ public class Game extends GameGrid
     show();
     // Loop to look for collision in the application thread
     // This makes it improbable that we miss a hit
-    boolean hasPacmanBeenHit = false;
     boolean hasPacmanEatAllPills;
     setupPillAndItemsLocations();
     int maxPillsAndItems = countPillsAndItems();
@@ -78,11 +77,13 @@ public class Game extends GameGrid
       Location pacLocation = pacActor.getLocation();
       // Iterate through monster list to check if collision has occurred
       for (Monster monster : monsters) {
-        if (monster.getLocation().equals(pacLocation)) hasPacmanBeenHit = true;
+        if (monster.hasCollided(pacActor)) {
+          monster.enactCollision(pacActor);
+        }
       }
       hasPacmanEatAllPills = pacActor.getNbPills() >= maxPillsAndItems;
       delay(10);
-    } while(!hasPacmanBeenHit && !hasPacmanEatAllPills);
+    } while(pacActor.getGameState() != GameState.Lose && !hasPacmanEatAllPills);
     delay(120);
 
     Location loc = pacActor.getLocation();
@@ -92,7 +93,7 @@ public class Game extends GameGrid
     pacActor.removeSelf();
 
     String title = "";
-    if (hasPacmanBeenHit) {
+    if (pacActor.getGameState() == GameState.Lose) {
       bg.setPaintColor(Color.red);
       title = "GAME OVER";
       addActor(new Actor("sprites/explosion3.gif"), loc);
