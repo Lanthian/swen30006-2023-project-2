@@ -12,10 +12,10 @@ public abstract class Item extends Actor implements ActorCollidable {
     private final static int RADIUS = 5;
     private final static Color NO_ITEM = Color.lightGray;
 
-//    private final Location location;
     protected Game game;
     protected Color colour;
     protected int value;
+    protected boolean eaten = false;
 
 
     // --- Constructor with sprite  ---
@@ -70,5 +70,9 @@ public abstract class Item extends Actor implements ActorCollidable {
 
     protected void clearSpot() {
         getBackground().fillCell(getLocation(), NO_ITEM);
+    }
+
+    public boolean getEaten() {
+        return this.eaten;
     }
 }

@@ -11,7 +11,6 @@ public class Pill extends Item {
     // --- Attributes & Constants ---
     private final static Color PILL_COLOUR = Color.white;
     private final static int DEFAULT_VALUE = 1;
-    private boolean eaten = false;
 
 
     // --- Constructor ---
