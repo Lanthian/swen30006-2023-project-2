@@ -9,10 +9,9 @@ import java.util.Properties;
 
 public class Game extends GameGrid
 {
-  private final static int nbHorzCells = 20;
-  private final static int nbVertCells = 11;
   protected PacManGameGrid grid = new PacManGameGrid(nbHorzCells, nbVertCells);
 
+  // Retrieve singleton pacActor, setting current game to this instance
   protected PacActor pacActor = PacActor.getPacActor(this);
   private ArrayList<ActorCollidable> collidables = new ArrayList<>();
 
@@ -25,14 +24,14 @@ public class Game extends GameGrid
 
   private GameCallback gameCallback;
   private Properties properties;
-  private int seed = 30006;
+  private int seed;
   private ArrayList<Location> propertyPillLocations = new ArrayList<>();
   private static ArrayList<Location> propertyGoldLocations = new ArrayList<>();
 
-  public Game(ArrayList<Map> maps, GameCallback gameCallback, Properties properties)
+  public Game(Map map, GameCallback gameCallback, Properties properties)
   {
     //Setup game
-    super(nbHorzCells, nbVertCells, 20, false);
+    super(map.getWidth(), map.getHeight(), 20, false);
     this.gameCallback = gameCallback;
     this.properties = properties;
     setSimulationPeriod(100);
@@ -47,7 +46,7 @@ public class Game extends GameGrid
     drawGrid(bg);
 
     // Setup Random seeds and speed for pacActor
-    seed = Integer.parseInt(properties.getProperty("seed"));
+    this.seed = Integer.parseInt(properties.getProperty("seed"));
 
     pacActor.setSeed(seed);
     pacActor.setSlowDown(3);

@@ -10,4 +10,22 @@ public class Map {
     ArrayList<PortalPair> portalpairs;
     ArrayList<Location> walls;
      */
+    private final int width;
+    private final int height;
+
+    // Constructor - todo
+    public Map() {
+        this.width = 21;
+        this.height = 11;
+    }
+
+
+    // -- Getters --
+    public int getWidth() {
+        return this.width;
+    }
+    public int getHeight() {
+        return this.height;
+    }
+
 }

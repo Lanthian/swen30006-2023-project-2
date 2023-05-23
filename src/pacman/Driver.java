@@ -37,6 +37,9 @@ public class Driver {
         }
         final Properties properties = PropertiesLoader.loadPropertiesFile(propertiesPath);
         GameCallback gameCallback = new GameCallback();
-        new Game(gameCallback, properties);
+
+        Map map = new Map();
+
+        new Game(map, gameCallback, properties);
     }
 }
