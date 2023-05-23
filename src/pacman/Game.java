@@ -45,6 +45,17 @@ public class Game extends GameGrid
     drawGrid(bg);
 
 
+    // === Load portals ===
+    // Iterate through portaltype, locationlist pairs
+    for (Map.Entry<PortalType, ArrayList<Location>> entry : map.getPortals().entrySet()) {
+      // Iterate through location pairs and add portals to the game
+      PortalPair portal = new PortalPair(this, entry.getKey());
+      // Already asserted map valid, so guaranteed 2 portals
+      portal.placePortal(entry.getValue().get(0));
+      portal.placePortal(entry.getValue().get(1));
+      this.portalPairs.add(portal);
+    }
+    this.collidables.addAll(portalPairs);
 
     // === Load pacActor ===
     pacActor.setAuto(Boolean.parseBoolean(properties.getProperty("PacMan.isAuto")));
@@ -78,11 +89,7 @@ public class Game extends GameGrid
     }
     this.collidables.addAll(items);
 
-    // Temp Add portals   // todo
-    PortalPair golds = new PortalPair(this, PortalType.DarkGold);
-    golds.placePortal(new Location(1, 1));
-    golds.placePortal(new Location(3, 3));
-    this.collidables.add(golds);
+
 
 
 
