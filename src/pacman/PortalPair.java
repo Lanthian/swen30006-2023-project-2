@@ -14,7 +14,6 @@ class Portal extends Actor {
     public Portal(Game game, PortalType type, Location loc) {
         super("sprites/" + type.getImageName());
 
-
         this.type = type;           // Portal type is final
         this.game = game;
 

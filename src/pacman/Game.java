@@ -5,6 +5,7 @@ import pacman.utility.GameCallback;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Properties;
 
 public class Game extends GameGrid
@@ -43,22 +44,23 @@ public class Game extends GameGrid
     GGBackground bg = getBg();
     drawGrid(bg);
 
-    // Setup pacman state
+
+
+    // === Load pacActor ===
     pacActor.setAuto(Boolean.parseBoolean(properties.getProperty("PacMan.isAuto")));
     addActor(pacActor, map.getPacLocation());
 
     // === Load monsters ===
     // Monster array and factory to reduce redundant code later
     MonsterFactory mFactory = MonsterFactory.getMonsterFactory();
-    for (Location loc : map.getTrolls()) {
-      Monster troll = mFactory.makeMonster(this, MonsterType.Troll);
-      this.monsters.add(troll);
-      addActor(troll, loc);
-    }
-    for (Location loc : map.getTx5s()) {
-      Monster tx5 = mFactory.makeMonster(this, MonsterType.TX5);
-      this.monsters.add(tx5);
-      addActor(tx5, loc);
+    // Iterate through monstertype, locationlist pairs
+    for (Map.Entry<MonsterType, ArrayList<Location>> entry : map.getMonsters().entrySet()) {
+      // Iterate through locations and add monsters to the game
+      for (Location loc : entry.getValue()) {
+        Monster monster = mFactory.makeMonster(this, entry.getKey());
+        this.monsters.add(monster);
+        addActor(monster, loc);
+      }
     }
 
     // === Load items ===
@@ -76,6 +78,11 @@ public class Game extends GameGrid
     }
     this.collidables.addAll(items);
 
+    // Temp Add portals   // todo
+    PortalPair golds = new PortalPair(this, PortalType.DarkGold);
+    golds.placePortal(new Location(1, 1));
+    golds.placePortal(new Location(3, 3));
+    this.collidables.add(golds);
 
 
 
@@ -153,14 +160,6 @@ public class Game extends GameGrid
 //    for (int i=0; i<this.monsters.size(); i++) {
 //      addActor(this.monsters.get(i), new Location(locationTuples.get(i)[X], locationTuples.get(i)[Y]), Location.NORTH);
 //    }
-
-    // Temp Add portals   // todo
-    PortalPair golds = new PortalPair(this, PortalType.DarkGold);
-    golds.placePortal(new Location(1, 1));
-    golds.placePortal(new Location(3, 3));
-    this.collidables.add(golds);
-//    addActor(golds.portal1, golds.portal1.getLocation());
-//    addActor(golds.portal2, golds.portal2.getLocation());
   }
 
   private int countPillsAndItems() {

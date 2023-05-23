@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameMap {
@@ -203,27 +204,21 @@ public class GameMap {
         return ice;
     }
 
-    public ArrayList<Location> getTrolls() {
-        return trolls;
+    public HashMap<MonsterType, ArrayList<Location>> getMonsters() {
+        HashMap<MonsterType, ArrayList<Location>> monsters = new HashMap<>();
+        monsters.put(MonsterType.Troll, trolls);
+        monsters.put(MonsterType.TX5, tx5s);
+
+        return monsters;
     }
 
-    public ArrayList<Location> getTx5s() {
-        return tx5s;
-    }
+    public HashMap<PortalType, ArrayList<Location>> getPortals() {
+        HashMap<PortalType, ArrayList<Location>> portalPairs = new HashMap<>();
+        portalPairs.put(PortalType.White, portalsWhite);
+        portalPairs.put(PortalType.Yellow, portalsYellow);
+        portalPairs.put(PortalType.DarkGray, portalsDarkGray);
+        portalPairs.put(PortalType.DarkGold, portalsDarkGold);
 
-    public ArrayList<Location> getPortalsWhite() {
-        return portalsWhite;
-    }
-
-    public ArrayList<Location> getPortalsDarkGray() {
-        return portalsDarkGray;
-    }
-
-    public ArrayList<Location> getPortalsDarkGold() {
-        return portalsDarkGold;
-    }
-
-    public ArrayList<Location> getPortalsYellow() {
-        return portalsYellow;
+        return portalPairs;
     }
 }
