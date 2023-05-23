@@ -9,12 +9,11 @@ import java.util.Properties;
 
 public class Game extends GameGrid
 {
-  private final static int nbHorzCells = 20;
-  private final static int nbVertCells = 11;
   protected PacManGameGrid grid = new PacManGameGrid(nbHorzCells, nbVertCells);
 
+  // Retrieve singleton pacActor, setting current game to this instance
   protected PacActor pacActor = PacActor.getPacActor(this);
-  private ArrayList<IsCollidable> collidables = new ArrayList<>();
+  private ArrayList<ActorCollidable> collidables = new ArrayList<>();
 
   private ArrayList<Monster> monsters = new ArrayList<>();
 
@@ -25,14 +24,14 @@ public class Game extends GameGrid
 
   private GameCallback gameCallback;
   private Properties properties;
-  private int seed = 30006;
+  private int seed;
   private ArrayList<Location> propertyPillLocations = new ArrayList<>();
   private static ArrayList<Location> propertyGoldLocations = new ArrayList<>();
 
-  public Game(GameCallback gameCallback, Properties properties)
+  public Game(Map map, GameCallback gameCallback, Properties properties)
   {
     //Setup game
-    super(nbHorzCells, nbVertCells, 20, false);
+    super(map.getWidth(), map.getHeight(), 20, false);
     this.gameCallback = gameCallback;
     this.properties = properties;
     setSimulationPeriod(100);
@@ -47,7 +46,8 @@ public class Game extends GameGrid
     drawGrid(bg);
 
     // Setup Random seeds and speed for pacActor
-    seed = Integer.parseInt(properties.getProperty("seed"));
+    this.seed = Integer.parseInt(properties.getProperty("seed"));
+
     pacActor.setSeed(seed);
     pacActor.setSlowDown(3);
 
@@ -80,7 +80,7 @@ public class Game extends GameGrid
       Location pacLocation = pacActor.getLocation();
       // Iterate through monster list to check if collision has occurred
       for (Monster monster : monsters) {
-        monster.checkAndCollide(pacActor);
+        monster.checkAndCollide(pacActor, ActorType.Player);
       }
       hasPacmanEatAllPills = pacActor.getNbPills() >= maxPillsAndItems;
       delay(10);
@@ -128,10 +128,11 @@ public class Game extends GameGrid
       addActor(this.monsters.get(i), new Location(locationTuples.get(i)[X], locationTuples.get(i)[Y]), Location.NORTH);
     }
 
-    // Add portals
-//    PortalPair golds = new PortalPair(this, PortalType.DarkGold);
-//    golds.placePortal(new Location(2, 2));
-//    golds.placePortal(new Location(4, 4));
+    // Temp Add portals   // todo
+    PortalPair golds = new PortalPair(this, PortalType.DarkGold);
+    golds.placePortal(new Location(1, 1));
+    golds.placePortal(new Location(3, 3));
+    this.collidables.add(golds);
 //    addActor(golds.portal1, golds.portal1.getLocation());
 //    addActor(golds.portal2, golds.portal2.getLocation());
   }
@@ -245,12 +246,17 @@ public class Game extends GameGrid
     }
   }
 
-  public void updatePlayer() {
-    for (IsCollidable element : collidables) {
-      element.checkAndCollide(pacActor);
+  public void updateActor(Actor actor, ActorType type) {
+    // Attempt collision with all collidables
+    for (ActorCollidable element : collidables) {
+      element.checkAndCollide(actor, type);
     }
-    String title = "[PacMan in the Multiverse] Current score: " + pacActor.getScore();
-    setTitle(title);
+
+    // Update game title if player
+    if (type == ActorType.Player) {
+      String title = "[PacMan in the Multiverse] Current score: " + pacActor.getScore();
+      setTitle(title);
+    }
   }
 
 
@@ -283,7 +289,6 @@ public class Game extends GameGrid
       if (location.equals(item.getLocation())) {
         return item;
       }
-
     }
 
     // Otherwise, item not found -- return null

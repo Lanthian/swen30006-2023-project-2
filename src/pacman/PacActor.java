@@ -20,7 +20,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   private static final int nbSprites = 4;
   private int idSprite = 0;
   private int nbPills = 0;
-  private int score = 0;
+  private static int score = 0;
   private Game game;
   private ArrayList<Location> visitedList = new ArrayList<Location>();
   private List<String> propertyMoves = new ArrayList<>();
@@ -92,7 +92,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     if (next != null && canMove(next))
     {
       setLocation(next);
-      game.updatePlayer();
+      game.updateActor(this, ActorType.Player);
     }
   }
 
@@ -137,7 +137,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
         Location next = getNextMoveLocation();
         if (canMove(next)) {
           setLocation(next);
-          game.updatePlayer();
+          game.updateActor(this, ActorType.Player);
         }
         break;
     }
@@ -187,7 +187,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
         }
       }
     }
-    game.updatePlayer();
+    game.updateActor(this, ActorType.Player);
     addVisitedList(next);
   }
 
@@ -216,33 +216,13 @@ public class PacActor extends Actor implements GGKeyRepeatListener
       return true;
   }
 
-
-//  private void eatPill(Location location)
-//  {
-//    Color c = getBackground().getColor(location);
-//    if (c.equals(Color.white))
-//    {
-//      Item pill = game.findItem("pills", location);
-//      if (pill != null) {pill.eat(this);}
-//    } else if (c.equals(Color.yellow)) {
-//      Item gold = game.findItem("gold",location);
-//      if (gold != null) {gold.eat(this);}
-//    } else if (c.equals(Color.blue)) {
-//      Item ice = game.findItem("ice",location);
-//      if (ice != null) {ice.eat(this);}
-//    }
-//    String title = "[PacMan in the Multiverse] Current score: " + score;
-//    gameGrid.setTitle(title);
-//  }
-
-
   // --- Getters & Setters ---
   public int getNbPills() {
     return nbPills;
   }
 
   public void addScore(int i) {
-    this.score += i;
+    score += i;
   }
 
   public void incrementNbPills() {
@@ -263,6 +243,6 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   }
 
   public int getScore() {
-    return this.score;
+    return score;
   }
 }

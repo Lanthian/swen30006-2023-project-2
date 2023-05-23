@@ -7,7 +7,7 @@ import ch.aplu.jgamegrid.Location;
 
 import java.awt.*;
 
-public abstract class Item extends Actor implements IsCollidable {
+public abstract class Item extends Actor implements ActorCollidable {
     // --- Attributes & Constants ---
     private final static int RADIUS = 5;
     private final static Color NO_ITEM = Color.lightGray;
@@ -41,9 +41,13 @@ public abstract class Item extends Actor implements IsCollidable {
     }
 
     @Override
-    public void checkAndCollide(PacActor pacActor) {
-        if (this.getLocation().equals(pacActor.getLocation())) {
-            this.eat(pacActor);
+    public void checkAndCollide(Actor actor, ActorType type) {
+        // Only player can interact with items
+        if (type != ActorType.Player) return;
+
+        if (this.getLocation().equals(actor.getLocation())) {
+            // Call each method
+            this.eat((PacActor)actor);
         }
     }
 
