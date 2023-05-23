@@ -14,8 +14,6 @@ public class Game extends GameGrid
   protected PacManGameGrid grid = new PacManGameGrid(nbHorzCells, nbVertCells);
 
   protected PacActor pacActor = PacActor.getPacActor(this);
-  private Monster troll = new TrollMonster(this, MonsterType.Troll);
-  private Monster tx5 = new TX5Monster(this, MonsterType.TX5);
   private ArrayList<Monster> monsters = new ArrayList<>();
 
   private ArrayList<Location> pillAndItemLocations = new ArrayList<Location>();
@@ -55,20 +53,14 @@ public class Game extends GameGrid
     pacActor.setSlowDown(3);
 
     // Monster array just to reduce redundant code below
-    this.monsters.add(troll);
-    this.monsters.add(tx5);
-
-    // Set monster seeds and speeds
-    for (Monster monster : this.monsters) {
-      monster.setSeed(seed);
-      monster.setSlowDown(3);
-    }
+    MonsterFactory mFactory = MonsterFactory.getMonsterFactory();
+    this.monsters.add(mFactory.makeMonster(this, MonsterType.TX5));
+    this.monsters.add(mFactory.makeMonster(this, MonsterType.Troll));
 
     // Set pacActor movement and other monster uniques
     addKeyRepeatListener(pacActor);
     setKeyRepeatPeriod(150);
 
-    tx5.stopMoving(5);
     setupActorLocations();
 
 
@@ -135,11 +127,11 @@ public class Game extends GameGrid
     }
 
     // Add portals
-    PortalPair golds = new PortalPair(this, PortalType.DarkGold);
-    golds.placePortal(new Location(2, 2));
-    golds.placePortal(new Location(4, 4));
-    addActor(golds.portal1, golds.portal1.getLocation());
-    addActor(golds.portal2, golds.portal2.getLocation());
+//    PortalPair golds = new PortalPair(this, PortalType.DarkGold);
+//    golds.placePortal(new Location(2, 2));
+//    golds.placePortal(new Location(4, 4));
+//    addActor(golds.portal1, golds.portal1.getLocation());
+//    addActor(golds.portal2, golds.portal2.getLocation());
   }
 
   private int countPillsAndItems() {
