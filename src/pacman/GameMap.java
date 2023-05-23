@@ -9,8 +9,13 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GameMap {
+    private final String filename;
+    private final boolean validity;
+
     private ArrayList<Location> pacActors = new ArrayList<>();
     private ArrayList<Location> walls = new ArrayList<>();
     private ArrayList<Location> pills = new ArrayList<>();
@@ -31,6 +36,8 @@ public class GameMap {
 
     // Constructor (loads in map xml file)
     public GameMap(String filepath) {
+        this.filename = filepath;
+
         // Load XML into map
         try {
             // Documentbuilder, XML parsing
@@ -44,7 +51,6 @@ public class GameMap {
             Element sizeElement = (Element) level.getElementsByTagName("size").item(0);
             this.width = Integer.parseInt(sizeElement.getElementsByTagName("width").item(0).getTextContent());
             this.height = Integer.parseInt(sizeElement.getElementsByTagName("height").item(0).getTextContent());
-
 
             // Read rows
             NodeList rowList = level.getElementsByTagName("row");
@@ -62,11 +68,14 @@ public class GameMap {
                 }
             }
 
-
         } catch (Exception e) {
             // File loading exception
             e.printStackTrace();
+            this.validity = false;
+            return;
         }
+
+        this.validity = validityCheck();
     }
 
     private void elementAdder(Location loc, String tileType){
@@ -117,6 +126,52 @@ public class GameMap {
     }
 
 
+    public boolean validityCheck() {
+        boolean validity = true;
+
+        // Checks starting point of pacman
+        if (pacActors.size() == 0){
+            System.out.println("[Level " + this.filename + " – no start for PacMan]");
+            validity = false;
+        } else if (pacActors.size() > 1 ){
+            System.out.println("[Level " + this.filename + " – more than one start for Pacman:");
+            for (Location loc: pacActors){
+                System.out.print(" " + loc + ";");
+            }
+            System.out.print("]");
+            validity = false;
+        }
+
+        // Checks if portals are a set of 2
+        List<String> portalColours = Arrays.asList("White", "Yellow", "DarkGold", "DarkGray");
+        int i = 0;
+
+        for (ArrayList<Location> portalArray : new ArrayList[]{portalsYellow, portalsWhite, portalsDarkGold, portalsDarkGray}) {
+            if (portalsYellow.size() != 2 && portalsYellow.size() != 0){
+                System.out.println("[Level " + this.filename + " – portal " + portalColours.get(i) + " count is not 2:");
+                for (Location loc: portalArray){
+                    System.out.print(" " + loc + ";");
+                }
+                System.out.print("]");
+                validity = false;
+            }
+            i++;
+        }
+
+        // Check if items min is 2
+        if (gold.size() + pills.size() < 2){
+            System.out.println("[Level " + this.filename + " – less than 2 Gold and Pill]");
+            validity = false;
+        }
+
+        // Check if all items are accessible to pacman
+        // todo
+
+        return validity;
+    }
+
+
+
     // -- Getters --
     public int getWidth() {
         return this.width;
@@ -124,7 +179,5 @@ public class GameMap {
     public int getHeight() {
         return this.height;
     }
-
-
 
 }
