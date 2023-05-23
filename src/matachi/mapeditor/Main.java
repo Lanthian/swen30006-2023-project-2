@@ -56,6 +56,7 @@ public class Main {
 			// if non-valid, write to log file
 			if (xmlFiles.size() == 0) {
 				log = "[Game " + input + " – no maps found]";
+				System.out.println(log);
 				writeString(log);
 			}
 
@@ -67,6 +68,7 @@ public class Main {
 				// if there are duplicates
 				if (!duplicates.isEmpty()) {
 					log = "[Game " + input + " – multiple maps at same level: " + duplicates + "]";
+					System.out.println(log);
 					writeString(log);
 				}
 			}
