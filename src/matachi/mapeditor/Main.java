@@ -46,12 +46,10 @@ public class Main {
 
 		// if empty just runs editor with no map
 		if (input.equals("")) {
-			System.out.println("null");
 			new Controller();
 		}
 		// if folder, checks if its a valid folder
 		else if (isItAFolder) {
-			System.out.println("its a folder");
 			List<String> xmlFiles = GameChecking.getXMLFiles(input);
 			// if non-valid, write to log file
 			if (xmlFiles.size() == 0) {
@@ -63,7 +61,6 @@ public class Main {
 			// then need to sort string numerically
 			Collections.sort(xmlFiles);
 			if (xmlFiles.size() > 1) {
-				System.out.println(xmlFiles);
 				String duplicates = GameChecking.checkDuplicates(xmlFiles);
 				// if there are duplicates
 				if (!duplicates.isEmpty()) {
@@ -75,7 +72,6 @@ public class Main {
 		}
 		// if its 1 file. starts edit mode of that map
 		else {
-			System.out.println("its an xml file");
 			new Controller().loadFile(input);
 		}
 	}

@@ -21,7 +21,6 @@ public class GameChecking {
             String filename = file.getName();
             if (filename.endsWith(".xml") & Character.isDigit(filename.charAt(0))) {
                 xmlFiles.add(filename);
-                System.out.println(filename);
             }
         }
         return xmlFiles;
