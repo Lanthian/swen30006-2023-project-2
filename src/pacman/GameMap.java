@@ -76,7 +76,7 @@ public class GameMap {
             return;
         }
 
-        this.validity = validityCheck();
+        this.validity = levelChecking();
     }
 
     private void elementAdder(Location loc, String tileType){
@@ -127,7 +127,7 @@ public class GameMap {
     }
 
 
-    public boolean validityCheck() {
+    public boolean levelChecking() {
         boolean validity = true;
 
         // Checks starting point of pacman

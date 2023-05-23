@@ -45,6 +45,11 @@ public class Game extends GameGrid
     drawGrid(bg);
 
 
+    // === Load walls ===
+    for (Location loc : map.getWalls()) {
+      bg.fillCell(loc, Color.gray);
+    }
+
     // === Load portals ===
     // Iterate through portaltype, locationlist pairs
     for (Map.Entry<PortalType, ArrayList<Location>> entry : map.getPortals().entrySet()) {
@@ -61,19 +66,6 @@ public class Game extends GameGrid
     pacActor.setAuto(Boolean.parseBoolean(properties.getProperty("PacMan.isAuto")));
     addActor(pacActor, map.getPacLocation());
 
-    // === Load monsters ===
-    // Monster array and factory to reduce redundant code later
-    MonsterFactory mFactory = MonsterFactory.getMonsterFactory();
-    // Iterate through monstertype, locationlist pairs
-    for (Map.Entry<MonsterType, ArrayList<Location>> entry : map.getMonsters().entrySet()) {
-      // Iterate through locations and add monsters to the game
-      for (Location loc : entry.getValue()) {
-        Monster monster = mFactory.makeMonster(this, entry.getKey());
-        this.monsters.add(monster);
-        addActor(monster, loc);
-      }
-    }
-
     // === Load items ===
     for (Location loc : map.getGold()) {
       Gold gold = new Gold(this, bg, loc);
@@ -89,8 +81,18 @@ public class Game extends GameGrid
     }
     this.collidables.addAll(items);
 
-
-
+    // === Load monsters ===
+    // Monster array and factory to reduce redundant code later
+    MonsterFactory mFactory = MonsterFactory.getMonsterFactory();
+    // Iterate through monstertype, locationlist pairs
+    for (Map.Entry<MonsterType, ArrayList<Location>> entry : map.getMonsters().entrySet()) {
+      // Iterate through locations and add monsters to the game
+      for (Location loc : entry.getValue()) {
+        Monster monster = mFactory.makeMonster(this, entry.getKey());
+        this.monsters.add(monster);
+        addActor(monster, loc);
+      }
+    }
 
 
     loadPillAndItemsLocations();
