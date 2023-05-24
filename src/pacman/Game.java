@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 
+
 public class Game extends GameGrid
 {
   protected PacManGameGrid grid = new PacManGameGrid(nbHorzCells, nbVertCells);

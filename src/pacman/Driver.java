@@ -3,6 +3,8 @@ package pacman;
 import pacman.utility.GameCallback;
 import pacman.utility.PropertiesLoader;
 
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Properties;
 
 import matachi.mapeditor.Main;
@@ -41,6 +43,15 @@ public class Driver {
         GameMap map = new GameMap("maps/1test.xml");
         // check map.isValid() here before using.
 
-        new Game(map, gameCallback, properties);
+//        ArrayList<Map> maps = new ArrayList<Map>();
+//        for (String mapName : jjjjj) {
+//            GameMap map = new GameMap("maps/1test.xml");
+//            if (!map.isValid()) {
+//                .....
+//            }
+//            maps.add(map);
+//        }
+
+//        new Game(map, gameCallback, properties);
     }
 }

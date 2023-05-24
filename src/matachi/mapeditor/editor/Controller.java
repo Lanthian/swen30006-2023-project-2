@@ -94,7 +94,7 @@ public class Controller implements ActionListener, GUIInformation {
 			temp = new String[0];
 //			temp = DEFAULT_PROPERTIES_PATH;
 			// todo todo todo todo
-			driver.main(temp);
+//			driver.main(temp);
 		}
 	}
 

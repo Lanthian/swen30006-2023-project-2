@@ -137,7 +137,7 @@ public class GameMap {
 
         try {
             // Safe to assume filename is valid, as game checking done prior
-            System.out.println(this.filename);      // todo - debug line
+            // System.out.println(this.filename);      // todo - debug line
             String filename = this.filename.substring(this.filename.lastIndexOf("/") + 1);
             int number = Integer.parseInt(filename.split("\\D+")[0]);
             BufferedWriter buf = new BufferedWriter(new FileWriter(number + "_ErrorMaplog.txt"));
