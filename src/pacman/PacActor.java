@@ -9,13 +9,13 @@ import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.util.*;
 
+
 public class PacActor extends Actor implements GGKeyRepeatListener
 {
   // Singleton instance
   private static PacActor singleton = null;
 
   private GameState gameState;
-
   private static final int nbSprites = 4;
   private int idSprite = 0;
   private int nbPills = 0;
@@ -109,24 +109,8 @@ public class PacActor extends Actor implements GGKeyRepeatListener
 
     if (isAuto) {
       moveInAutoMode();
-//      System.out.println("Pacman auto: Implement this.");   // todo
     }
     this.game.getGameCallback().pacManLocationChanged(getLocation(), score, nbPills);
-  }
-
-  private Location closestPillLocation() {
-    int currentDistance = 1000;
-    Location currentLocation = null;
-    List<Location> lootLocations = game.getRemainingLoot();
-    for (Location location: lootLocations) {
-      int distanceToPill = location.getDistanceTo(getLocation());
-      if (distanceToPill < currentDistance) {
-        currentLocation = location;
-        currentDistance = distanceToPill;
-      }
-    }
-
-    return currentLocation;
   }
 
   private void moveInAutoMode() {
@@ -142,8 +126,9 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     Location next = queuedMoves.remove(0);
     assert(next != null);     // pointless assertion but better safe than sorry
 
+    // Set direction and make move to next location
+    setDirection(getLocation().get4CompassDirectionTo(next));
     setLocation(next);
-
 
     game.updateActor(this, ActorType.Player);
     addVisitedList(next);

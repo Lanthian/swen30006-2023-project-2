@@ -4,7 +4,6 @@ import ch.aplu.jgamegrid.*;
 import pacman.utility.GameCallback;
 
 import java.awt.*;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
@@ -13,7 +12,6 @@ import java.util.Properties;
 public class Game extends GameGrid
 {
   protected PacManGameGrid grid = new PacManGameGrid(nbHorzCells, nbVertCells);
-
   // === Actors ===
   // Retrieve singleton pacActor, setting current game to this instance
   protected PacActor pacActor = PacActor.getPacActor(this);
@@ -145,6 +143,7 @@ public class Game extends GameGrid
     gameCallback.endOfGame(title);
 
     doPause();
+    // todo - find a way to terminate gamegrid
   }
 
   private int countPillsAndItems() {
