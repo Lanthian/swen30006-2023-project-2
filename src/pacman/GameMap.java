@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -135,7 +136,9 @@ public class GameMap {
 
 
         try {
-            int  number = Integer.parseInt(this.filename.split("\\D+")[0]);
+            System.out.println(this.filename);
+            String filename = this.filename.substring(this.filename.lastIndexOf("/") + 1);
+            int number = Integer.parseInt(filename.split("\\D+")[0]);
             BufferedWriter buf = new BufferedWriter(new FileWriter(number + "_ErrorMaplog.txt"));
 
             // Checks starting point of pacman
