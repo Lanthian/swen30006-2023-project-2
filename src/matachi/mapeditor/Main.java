@@ -31,6 +31,10 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
+		String propertiesPath = DEFAULT_PROPERTIES_PATH;
+		final Properties properties = PropertiesLoader.loadPropertiesFile(propertiesPath);
+		GameCallback gameCallback = new GameCallback();
+
 		// write to log file
 		try {
 			fileWriter = new FileWriter(logFilePath);
@@ -50,18 +54,16 @@ public class Main {
 			new Controller();
 		}
 
-
 		// if folder, checks if its a valid folder
 		if (isItAFolder) {
-			System.out.println("is a folder\n");
 			File root = new File(input);
-			String rootpath = root.getPath();
+			String rootPath = root.getPath();
 			List<String> xmlFiles = GameChecking.getXMLFiles(input);
-			// if non-valid, write to log file
+			// if non-valid, write to log file and open blank editor
 			if (xmlFiles.size() == 0) {
 				log = "[Game " + input + " – no maps found]";
-//				System.out.println(log);
 				writeString(log);
+				new Controller();
 			}
 
 			// then need to sort string numerically
@@ -71,9 +73,9 @@ public class Main {
 				// if there are duplicates
 				if (!duplicates.isEmpty()) {
 					log = "[Game " + input + " – multiple maps at same level: " + duplicates + "]";
-//					System.out.println(log);
 					writeString(log);
-					// if error do what?
+					// open blank editor
+					new Controller();
 				}
 
 				// array of maps string
@@ -81,7 +83,7 @@ public class Main {
 				System.out.println(xmlFiles);
 				ArrayList<GameMap> mapArrayList = new ArrayList<>();
 				for (String Stringfile : xmlFiles) {
-					String fullPath = rootpath + "/" + Stringfile;
+					String fullPath = rootPath + "/" + Stringfile;
 					System.out.println(fullPath);
 					GameMap map = new GameMap(fullPath);
 					if (!map.isValid()) {
@@ -96,9 +98,6 @@ public class Main {
 				}
 
 				// run map
-				String propertiesPath = DEFAULT_PROPERTIES_PATH;
-				final Properties properties = PropertiesLoader.loadPropertiesFile(propertiesPath);
-				GameCallback gameCallback = new GameCallback();
 				for (GameMap map : mapArrayList) {
 					new Game(map, gameCallback, properties);
 				}
