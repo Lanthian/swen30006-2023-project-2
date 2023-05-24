@@ -32,15 +32,18 @@ public class Driver {
         // parses input into map editor
         Main.main(inputArray);
 
+        // todo all code is passed from driver to editor main
+        // todo can delete below
+
+//        if (args.length > 0) {
+//            propertiesPath = args[0];
+//        }
 
 
-        if (args.length > 0) {
-            propertiesPath = args[0];
-        }
-        final Properties properties = PropertiesLoader.loadPropertiesFile(propertiesPath);
-        GameCallback gameCallback = new GameCallback();
-
-        GameMap map = new GameMap("maps/1SpecMap_Monsterless.xml");
+//        final Properties properties = PropertiesLoader.loadPropertiesFile(propertiesPath);
+//        GameCallback gameCallback = new GameCallback();
+//
+//        GameMap map = new GameMap("maps/1test.xml");
         // check map.isValid() here before using.
 
 //        ArrayList<Map> maps = new ArrayList<Map>();
