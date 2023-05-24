@@ -3,12 +3,11 @@
 package pacman;
 
 import ch.aplu.jgamegrid.*;
+import jdk.jshell.execution.LoaderDelegate;
+
 import java.awt.event.KeyEvent;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class PacActor extends Actor implements GGKeyRepeatListener
 {
@@ -28,6 +27,9 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   private final int listLength = 10;
   private int seed;
   private Random randomiser = new Random();
+
+  private static final Location.CompassDirection[] ANGLES = {Location.NORTH,
+          Location.EAST,Location.SOUTH,Location.WEST};
 
   // Constructor
   private PacActor() {
@@ -195,6 +197,21 @@ public class PacActor extends Actor implements GGKeyRepeatListener
       return false;
     else
       return true;
+  }
+
+  // Helper function to find valid moves from a location    // todo - javadoc comment
+  // note the random order
+  public ArrayList<Location> getValidMoves(Location loc) {
+    ArrayList<Location> validLocations = new ArrayList<>();
+
+    List<Location.CompassDirection> directions = new ArrayList<>(Arrays.asList(ANGLES));
+    Collections.shuffle(directions);
+    for (Location.CompassDirection dir : directions) {
+      Location step = loc.getNeighbourLocation(dir);
+      if (canMove(step)) validLocations.add(step);
+    }
+
+    return validLocations;
   }
 
   // --- Getters & Setters ---
