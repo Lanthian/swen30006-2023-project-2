@@ -135,7 +135,7 @@ public class GameMap {
 
 
         try {
-            int  number = Integer.parseInt(this.filename.split("\\D+")[0]);
+            int number = Integer.parseInt(this.filename.split("\\D+")[0]);
             BufferedWriter buf = new BufferedWriter(new FileWriter(number + "_ErrorMaplog.txt"));
 
             // Checks starting point of pacman
@@ -146,9 +146,9 @@ public class GameMap {
             } else if (pacActors.size() > 1) {
                 buf.write("[Level " + this.filename + " – more than one start for Pacman:");
                 for (Location loc : pacActors) {
-                    System.out.print(" " + loc + ";");
+                    buf.write(" " + loc + ";");
                 }
-                System.out.print("]");
+                buf.write("]");
                 buf.newLine();
                 validity = false;
             }
