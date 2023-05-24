@@ -12,7 +12,7 @@ public class Main {
 	static boolean isItAFolder;
 	static String log;
 	private static FileWriter fileWriter = null;
-	private static String logFilePath = "Log.txt";
+	private static String logFilePath = "GameCheckingLog.txt";
 
 	public static void writeString(String str) {
 		try {
