@@ -30,6 +30,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
 
   private static final Location.CompassDirection[] ANGLES = {Location.NORTH,
           Location.EAST,Location.SOUTH,Location.WEST};
+  private ArrayList<Location> queuedMoves = new ArrayList<>();
 
   // Constructor
   private PacActor() {
@@ -106,8 +107,8 @@ public class PacActor extends Actor implements GGKeyRepeatListener
       idSprite = 0;
 
     if (isAuto) {
-//      moveInAutoMode();
-      System.out.println("Pacman auto: Implement this.");
+      moveInAutoMode();
+//      System.out.println("Pacman auto: Implement this.");   // todo
     }
     this.game.getGameCallback().pacManLocationChanged(getLocation(), score, nbPills);
   }
@@ -127,11 +128,24 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     return currentLocation;
   }
 
-//  private void moveInAutoMode() {
-//    if (propertyMoves.size() > propertyMoveIndex) {
-//      followPropertyMoves();
-//      return;
-//    }
+  private void moveInAutoMode() {
+    // Requeue a set of moves if previous queue done
+    if (this.queuedMoves.size() == 0) {
+      PathFinder closestLoot = new PathFinder(game.getRemainingLoot());
+      queuedMoves = closestLoot.findNextLoc(this);
+
+      // Check for no remaining moves -- game should end soon (all items collected)...
+      if (this.queuedMoves.size() == 0) return;
+    }
+
+    Location next = queuedMoves.remove(0);
+    assert(next != null);     // pointless assertion but better safe than sorry
+
+    setLocation(next);
+
+
+    game.updateActor(this, ActorType.Player);
+    addVisitedList(next);
 //    Location closestPill = closestPillLocation();
 //    double oldDirection = getDirection();
 //
@@ -170,9 +184,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
 //        }
 //      }
 //    }
-//    game.updateActor(this, ActorType.Player);
-//    addVisitedList(next);
-//  }
+  }
 
   private void addVisitedList(Location location)
   {
