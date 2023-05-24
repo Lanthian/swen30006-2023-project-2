@@ -181,6 +181,9 @@ public class Game extends GameGrid
   public int getSeed() {
     return this.seed;
   }
+  public ArrayList<PortalPair> getPortals() {
+    return this.portalPairs;
+  }
 
   /**
    * @return An ArrayList of the Locations of the remaining loot still in a

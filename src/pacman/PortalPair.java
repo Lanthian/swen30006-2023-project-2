@@ -52,11 +52,24 @@ public class PortalPair implements ActorCollidable {
 
     @Override
     public void checkAndCollide(Actor actor, ActorType type) {
-        if (this.portal1.getLocation().equals(actor.getLocation())) {
-            actor.setLocation(portal2.getLocation());
-        } else if (this.portal2.getLocation().equals(actor.getLocation())) {
-            actor.setLocation(portal1.getLocation());
-        }
+        Location oldLoc = actor.getLocation();
+        Location newLoc = teleportLocation(oldLoc);
+
+        if (!newLoc.equals(oldLoc)) actor.setLocation(newLoc);
+    }
+
+
+    /**
+     * Receives a location and applies a teleportation transformation to it if
+     * valid.
+     * @param loc Location attempting to teleport
+     * @return Location teleported to from either portal, or just the location
+     *         itself if not intersecting portal pair.
+     */
+    public Location teleportLocation(Location loc) {
+        if (loc.equals(portal1.getLocation())) return portal2.getLocation();
+        else if (loc.equals(portal2.getLocation())) return portal1.getLocation();
+        else return loc;
     }
 }
 

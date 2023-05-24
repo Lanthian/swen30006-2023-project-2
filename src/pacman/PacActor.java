@@ -132,7 +132,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   private void moveInAutoMode() {
     // Requeue a set of moves if previous queue done
     if (this.queuedMoves.size() == 0) {
-      PathFinder closestLoot = new PathFinder(game.getRemainingLoot());
+      PathFinder closestLoot = new PathFinder(game.getRemainingLoot(), game.getPortals());
       queuedMoves = closestLoot.findNextLoc(this);
 
       // Check for no remaining moves -- game should end soon (all items collected)...
