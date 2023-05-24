@@ -3,12 +3,11 @@
 package pacman;
 
 import ch.aplu.jgamegrid.*;
+import jdk.jshell.execution.LoaderDelegate;
+
 import java.awt.event.KeyEvent;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class PacActor extends Actor implements GGKeyRepeatListener
 {
@@ -20,7 +19,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   private static final int nbSprites = 4;
   private int idSprite = 0;
   private int nbPills = 0;
-  private static int score = 0;
+  private int score = 0;
   private Game game;
   private ArrayList<Location> visitedList = new ArrayList<Location>();
   private List<String> propertyMoves = new ArrayList<>();
@@ -28,6 +27,10 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   private final int listLength = 10;
   private int seed;
   private Random randomiser = new Random();
+
+  private static final Location.CompassDirection[] ANGLES = {Location.NORTH,
+          Location.EAST,Location.SOUTH,Location.WEST};
+  private ArrayList<Location> queuedMoves = new ArrayList<>();
 
   // Constructor
   private PacActor() {
@@ -40,7 +43,8 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     if (singleton == null) {
       singleton = new PacActor();
     }
-    singleton.setGame(game);
+    singleton.setGame(game);  // Set current game
+    singleton.score = 0;      // Reset score if not 0.
     return singleton;
   }
 
@@ -104,8 +108,8 @@ public class PacActor extends Actor implements GGKeyRepeatListener
       idSprite = 0;
 
     if (isAuto) {
-//      moveInAutoMode();
-      System.out.println("Pacman auto: Implement this.");
+      moveInAutoMode();
+//      System.out.println("Pacman auto: Implement this.");   // todo
     }
     this.game.getGameCallback().pacManLocationChanged(getLocation(), score, nbPills);
   }
@@ -125,52 +129,25 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     return currentLocation;
   }
 
-//  private void moveInAutoMode() {
-//    if (propertyMoves.size() > propertyMoveIndex) {
-//      followPropertyMoves();
-//      return;
-//    }
-//    Location closestPill = closestPillLocation();
-//    double oldDirection = getDirection();
-//
-//    Location.CompassDirection compassDir =
-//            getLocation().get4CompassDirectionTo(closestPill);
-//    Location next = getLocation().getNeighbourLocation(compassDir);
-//    setDirection(compassDir);
-//    if (!isVisited(next) && canMove(next)) {
-//      setLocation(next);
-//    } else {
-//      // normal movement
-//      int sign = randomiser.nextDouble() < 0.5 ? 1 : -1;
-//      setDirection(oldDirection);
-//      turn(sign * 90);  // Try to turn left/right
-//      next = getNextMoveLocation();
-//      if (canMove(next)) {
-//        setLocation(next);
-//      } else {
-//        setDirection(oldDirection);
-//        next = getNextMoveLocation();
-//        if (canMove(next)) // Try to move forward
-//        {
-//          setLocation(next);
-//        } else {
-//          setDirection(oldDirection);
-//          turn(-sign * 90);  // Try to turn right/left
-//          next = getNextMoveLocation();
-//          if (canMove(next)) {
-//            setLocation(next);
-//          } else {
-//            setDirection(oldDirection);
-//            turn(180);  // Turn backward
-//            next = getNextMoveLocation();
-//            setLocation(next);
-//          }
-//        }
-//      }
-//    }
-//    game.updateActor(this, ActorType.Player);
-//    addVisitedList(next);
-//  }
+  private void moveInAutoMode() {
+    // Requeue a set of moves if previous queue done
+    if (this.queuedMoves.size() == 0) {
+      PathFinder closestLoot = new PathFinder(game.getRemainingLoot(), game.getPortals());
+      queuedMoves = closestLoot.findNextLoc(this);
+
+      // Check for no remaining moves -- game should end soon (all items collected)...
+      if (this.queuedMoves.size() == 0) return;
+    }
+
+    Location next = queuedMoves.remove(0);
+    assert(next != null);     // pointless assertion but better safe than sorry
+
+    setLocation(next);
+
+
+    game.updateActor(this, ActorType.Player);
+    addVisitedList(next);
+  }
 
   private void addVisitedList(Location location)
   {
@@ -197,13 +174,28 @@ public class PacActor extends Actor implements GGKeyRepeatListener
       return true;
   }
 
+  // Helper function to find valid moves from a location    // todo - javadoc comment
+  // note the random order
+  public ArrayList<Location> getValidMoves(Location loc) {
+    ArrayList<Location> validLocations = new ArrayList<>();
+
+    List<Location.CompassDirection> directions = new ArrayList<>(Arrays.asList(ANGLES));
+    Collections.shuffle(directions);
+    for (Location.CompassDirection dir : directions) {
+      Location step = loc.getNeighbourLocation(dir);
+      if (this.canMove(step)) validLocations.add(step);
+    }
+
+    return validLocations;
+  }
+
   // --- Getters & Setters ---
   public int getNbPills() {
     return nbPills;
   }
 
   public void addScore(int i) {
-    score += i;
+    this.score += i;
   }
 
   public void incrementNbPills() {

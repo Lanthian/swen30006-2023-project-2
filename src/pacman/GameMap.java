@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -135,7 +136,10 @@ public class GameMap {
 
 
         try {
-            int number = Integer.parseInt(this.filename.split("\\D+")[0]);
+            // Safe to assume filename is valid, as game checking done prior
+            System.out.println(this.filename);      // todo - bebug line
+            String filename = this.filename.substring(this.filename.lastIndexOf("/") + 1);
+            int number = Integer.parseInt(filename.split("\\D+")[0]);
             BufferedWriter buf = new BufferedWriter(new FileWriter(number + "_ErrorMaplog.txt"));
 
             // Checks starting point of pacman
@@ -146,9 +150,9 @@ public class GameMap {
             } else if (pacActors.size() > 1) {
                 buf.write("[Level " + this.filename + " – more than one start for Pacman:");
                 for (Location loc : pacActors) {
-                    buf.write(" " + loc + ";");
+                    System.out.print(" " + loc + ";");
                 }
-                buf.write("]");
+                System.out.print("]");
                 buf.newLine();
                 validity = false;
             }

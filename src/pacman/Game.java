@@ -49,6 +49,9 @@ public class Game extends GameGrid
     // === Load portals ===
     // Iterate through portaltype, locationlist pairs
     for (Map.Entry<PortalType, ArrayList<Location>> entry : map.getPortals().entrySet()) {
+      // If portal set does not exist, skip
+      if (entry.getValue().size() == 0) continue;
+
       // Iterate through location pairs and add portals to the game
       PortalPair portal = new PortalPair(this, entry.getKey());
       // Already asserted map valid, so guaranteed 2 portals
@@ -177,6 +180,9 @@ public class Game extends GameGrid
   }
   public int getSeed() {
     return this.seed;
+  }
+  public ArrayList<PortalPair> getPortals() {
+    return this.portalPairs;
   }
 
   /**
