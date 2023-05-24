@@ -179,7 +179,6 @@ public class GameMap {
 
             // Check if all items are accessible to pacman
             // todo
-
             buf.close();
         } catch (IOException e) {
             e.printStackTrace();
