@@ -8,7 +8,7 @@ import java.util.Properties;
 import matachi.mapeditor.Main;
 
 public class Driver {
-    public static final String DEFAULT_PROPERTIES_PATH = "properties/test1.properties";
+    public static final String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
     public static final String TEST = "maps";
 
     /**
