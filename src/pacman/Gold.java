@@ -27,7 +27,8 @@ public class Gold extends Item {
     @Override
     public void eat(PacActor pacActor) {
         // Only eat uneaten items
-        if (this.isVisible()) {
+        if (!this.eaten) {
+            this.eaten = true;
             this.hide();        // Hide sprite
             this.clearSpot();   // Paint background grey
             this.game.getGameCallback().pacManEatPillsAndItems(this.getLocation(), "gold");

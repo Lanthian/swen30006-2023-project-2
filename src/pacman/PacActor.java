@@ -104,7 +104,8 @@ public class PacActor extends Actor implements GGKeyRepeatListener
       idSprite = 0;
 
     if (isAuto) {
-      moveInAutoMode();
+//      moveInAutoMode();
+      System.out.println("Pacman auto: Implement this.");
     }
     this.game.getGameCallback().pacManLocationChanged(getLocation(), score, nbPills);
   }
@@ -112,8 +113,8 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   private Location closestPillLocation() {
     int currentDistance = 1000;
     Location currentLocation = null;
-    List<Location> pillAndItemLocations = game.getPillAndItemLocations();
-    for (Location location: pillAndItemLocations) {
+    List<Location> lootLocations = game.getRemainingLoot();
+    for (Location location: lootLocations) {
       int distanceToPill = location.getDistanceTo(getLocation());
       if (distanceToPill < currentDistance) {
         currentLocation = location;
@@ -124,72 +125,52 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     return currentLocation;
   }
 
-  private void followPropertyMoves() {
-    String currentMove = propertyMoves.get(propertyMoveIndex);
-    switch(currentMove) {
-      case "R":
-        turn(90);
-        break;
-      case "L":
-        turn(-90);
-        break;
-      case "M":
-        Location next = getNextMoveLocation();
-        if (canMove(next)) {
-          setLocation(next);
-          game.updateActor(this, ActorType.Player);
-        }
-        break;
-    }
-    propertyMoveIndex++;
-  }
-
-  private void moveInAutoMode() {
-    if (propertyMoves.size() > propertyMoveIndex) {
-      followPropertyMoves();
-      return;
-    }
-    Location closestPill = closestPillLocation();
-    double oldDirection = getDirection();
-
-    Location.CompassDirection compassDir =
-            getLocation().get4CompassDirectionTo(closestPill);
-    Location next = getLocation().getNeighbourLocation(compassDir);
-    setDirection(compassDir);
-    if (!isVisited(next) && canMove(next)) {
-      setLocation(next);
-    } else {
-      // normal movement
-      int sign = randomiser.nextDouble() < 0.5 ? 1 : -1;
-      setDirection(oldDirection);
-      turn(sign * 90);  // Try to turn left/right
-      next = getNextMoveLocation();
-      if (canMove(next)) {
-        setLocation(next);
-      } else {
-        setDirection(oldDirection);
-        next = getNextMoveLocation();
-        if (canMove(next)) // Try to move forward
-        {
-          setLocation(next);
-        } else {
-          setDirection(oldDirection);
-          turn(-sign * 90);  // Try to turn right/left
-          next = getNextMoveLocation();
-          if (canMove(next)) {
-            setLocation(next);
-          } else {
-            setDirection(oldDirection);
-            turn(180);  // Turn backward
-            next = getNextMoveLocation();
-            setLocation(next);
-          }
-        }
-      }
-    }
-    game.updateActor(this, ActorType.Player);
-    addVisitedList(next);
-  }
+//  private void moveInAutoMode() {
+//    if (propertyMoves.size() > propertyMoveIndex) {
+//      followPropertyMoves();
+//      return;
+//    }
+//    Location closestPill = closestPillLocation();
+//    double oldDirection = getDirection();
+//
+//    Location.CompassDirection compassDir =
+//            getLocation().get4CompassDirectionTo(closestPill);
+//    Location next = getLocation().getNeighbourLocation(compassDir);
+//    setDirection(compassDir);
+//    if (!isVisited(next) && canMove(next)) {
+//      setLocation(next);
+//    } else {
+//      // normal movement
+//      int sign = randomiser.nextDouble() < 0.5 ? 1 : -1;
+//      setDirection(oldDirection);
+//      turn(sign * 90);  // Try to turn left/right
+//      next = getNextMoveLocation();
+//      if (canMove(next)) {
+//        setLocation(next);
+//      } else {
+//        setDirection(oldDirection);
+//        next = getNextMoveLocation();
+//        if (canMove(next)) // Try to move forward
+//        {
+//          setLocation(next);
+//        } else {
+//          setDirection(oldDirection);
+//          turn(-sign * 90);  // Try to turn right/left
+//          next = getNextMoveLocation();
+//          if (canMove(next)) {
+//            setLocation(next);
+//          } else {
+//            setDirection(oldDirection);
+//            turn(180);  // Turn backward
+//            next = getNextMoveLocation();
+//            setLocation(next);
+//          }
+//        }
+//      }
+//    }
+//    game.updateActor(this, ActorType.Player);
+//    addVisitedList(next);
+//  }
 
   private void addVisitedList(Location location)
   {
