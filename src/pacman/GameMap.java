@@ -7,7 +7,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -130,43 +133,57 @@ public class GameMap {
     public boolean levelChecking() {
         boolean validity = true;
 
-        // Checks starting point of pacman
-        if (pacActors.size() == 0){
-            System.out.println("[Level " + this.filename + " – no start for PacMan]");
-            validity = false;
-        } else if (pacActors.size() > 1 ){
-            System.out.println("[Level " + this.filename + " – more than one start for Pacman:");
-            for (Location loc: pacActors){
-                System.out.print(" " + loc + ";");
-            }
-            System.out.print("]");
-            validity = false;
-        }
 
-        // Checks if portals are a set of 2
-        List<String> portalColours = Arrays.asList("White", "Yellow", "DarkGold", "DarkGray");
-        int i = 0;
+        try {
+            int  number = Integer.parseInt(this.filename.split("\\D+")[0]);
+            BufferedWriter buf = new BufferedWriter(new FileWriter(number + "_ErrorMaplog.txt"));
 
-        for (ArrayList<Location> portalArray : new ArrayList[]{portalsYellow, portalsWhite, portalsDarkGold, portalsDarkGray}) {
-            if (portalsYellow.size() != 2 && portalsYellow.size() != 0){
-                System.out.println("[Level " + this.filename + " – portal " + portalColours.get(i) + " count is not 2:");
-                for (Location loc: portalArray){
+            // Checks starting point of pacman
+            if (pacActors.size() == 0) {
+                buf.write("[Level " + this.filename + " – no start for PacMan]");
+                buf.newLine();
+                validity = false;
+            } else if (pacActors.size() > 1) {
+                buf.write("[Level " + this.filename + " – more than one start for Pacman:");
+                for (Location loc : pacActors) {
                     System.out.print(" " + loc + ";");
                 }
                 System.out.print("]");
+                buf.newLine();
                 validity = false;
             }
-            i++;
-        }
 
-        // Check if items min is 2
-        if (gold.size() + pills.size() < 2){
-            System.out.println("[Level " + this.filename + " – less than 2 Gold and Pill]");
-            validity = false;
-        }
+            // Checks if portals are a set of 2
+            List<String> portalColours = Arrays.asList("White", "Yellow", "DarkGold", "DarkGray");
+            int i = 0;
 
-        // Check if all items are accessible to pacman
-        // todo
+            for (ArrayList<Location> portalArray : new ArrayList[]{portalsYellow, portalsWhite, portalsDarkGold, portalsDarkGray}) {
+                if (portalsYellow.size() != 2 && portalsYellow.size() != 0) {
+                    buf.write("[Level " + this.filename + " – portal " + portalColours.get(i) + " count is not 2:");
+                    for (Location loc : portalArray) {
+                        buf.write(" " + loc + ";");
+                    }
+                    buf.write("]");
+                    buf.newLine();
+                    validity = false;
+                }
+                i++;
+            }
+
+            // Check if items min is 2
+            if (gold.size() + pills.size() < 2) {
+                buf.write("[Level " + this.filename + " – less than 2 Gold and Pill]");
+                buf.newLine();
+                validity = false;
+            }
+
+            // Check if all items are accessible to pacman
+            // todo
+
+            buf.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return validity;
     }
