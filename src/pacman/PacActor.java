@@ -19,7 +19,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   private static final int nbSprites = 4;
   private int idSprite = 0;
   private int nbPills = 0;
-  private static int score = 0;
+  private int score = 0;
   private Game game;
   private ArrayList<Location> visitedList = new ArrayList<Location>();
   private List<String> propertyMoves = new ArrayList<>();
@@ -43,7 +43,8 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     if (singleton == null) {
       singleton = new PacActor();
     }
-    singleton.setGame(game);
+    singleton.setGame(game);  // Set current game
+    singleton.score = 0;      // Reset score if not 0.
     return singleton;
   }
 
@@ -146,44 +147,6 @@ public class PacActor extends Actor implements GGKeyRepeatListener
 
     game.updateActor(this, ActorType.Player);
     addVisitedList(next);
-//    Location closestPill = closestPillLocation();
-//    double oldDirection = getDirection();
-//
-//    Location.CompassDirection compassDir =
-//            getLocation().get4CompassDirectionTo(closestPill);
-//    Location next = getLocation().getNeighbourLocation(compassDir);
-//    setDirection(compassDir);
-//    if (!isVisited(next) && canMove(next)) {
-//      setLocation(next);
-//    } else {
-//      // normal movement
-//      int sign = randomiser.nextDouble() < 0.5 ? 1 : -1;
-//      setDirection(oldDirection);
-//      turn(sign * 90);  // Try to turn left/right
-//      next = getNextMoveLocation();
-//      if (canMove(next)) {
-//        setLocation(next);
-//      } else {
-//        setDirection(oldDirection);
-//        next = getNextMoveLocation();
-//        if (canMove(next)) // Try to move forward
-//        {
-//          setLocation(next);
-//        } else {
-//          setDirection(oldDirection);
-//          turn(-sign * 90);  // Try to turn right/left
-//          next = getNextMoveLocation();
-//          if (canMove(next)) {
-//            setLocation(next);
-//          } else {
-//            setDirection(oldDirection);
-//            turn(180);  // Turn backward
-//            next = getNextMoveLocation();
-//            setLocation(next);
-//          }
-//        }
-//      }
-//    }
   }
 
   private void addVisitedList(Location location)
@@ -232,7 +195,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   }
 
   public void addScore(int i) {
-    score += i;
+    this.score += i;
   }
 
   public void incrementNbPills() {
