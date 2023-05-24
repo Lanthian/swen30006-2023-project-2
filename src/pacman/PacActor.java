@@ -183,7 +183,7 @@ public class PacActor extends Actor implements GGKeyRepeatListener
     Collections.shuffle(directions);
     for (Location.CompassDirection dir : directions) {
       Location step = loc.getNeighbourLocation(dir);
-      if (canMove(step)) validLocations.add(step);
+      if (this.canMove(step)) validLocations.add(step);
     }
 
     return validLocations;

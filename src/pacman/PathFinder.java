@@ -44,7 +44,7 @@ public class PathFinder {
                 visited.add(loc);
 
                 // Otherwise queuing up new path
-                ArrayList<Location> pathPlusStep = path;
+                ArrayList<Location> pathPlusStep = new ArrayList<>(path);
                 pathPlusStep.add(loc);
                 queue.add(pathPlusStep);
             }
