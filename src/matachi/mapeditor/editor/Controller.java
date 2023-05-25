@@ -7,6 +7,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import pacman.Driver;
+import pacman.GameMap;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -43,7 +44,8 @@ public class Controller implements ActionListener, GUIInformation {
 	private int gridWith = Constants.MAP_WIDTH;
 	private int gridHeight = Constants.MAP_HEIGHT;
 
-	public static final String DEFAULT_PROPERTIES_PATH = "properties/test2.properties";
+	private String currentMap;
+
 
 	/**
 	 * Construct the controller.
@@ -87,14 +89,24 @@ public class Controller implements ActionListener, GUIInformation {
 		} else if (e.getActionCommand().equals("update")) {
 			updateGrid(gridWith, gridHeight);
 		} else if (e.getActionCommand().equals("start_game")) {
-			// todo
-			Driver driver = new Driver();
+//			// todo
+//			Driver driver = new Driver();
+//
+//			String[] temp;
+//			temp = new String[0];
+////			temp = DEFAULT_PROPERTIES_PATH;
+//			// todo todo todo todo
+////			driver.main(temp);
 
-			String[] temp;
-			temp = new String[0];
-//			temp = DEFAULT_PROPERTIES_PATH;
-			// todo todo todo todo
-//			driver.main(temp);
+			// Check that a map has been loaded or saved
+			if (this.currentMap != null) {
+				GameMap currentMap = new GameMap(this.currentMap);
+
+				// Check if level is valid before loading
+				if (currentMap.isValid()) {
+
+				}
+			}
 		}
 	}
 
@@ -185,6 +197,9 @@ public class Controller implements ActionListener, GUIInformation {
 				xmlOutput
 						.output(doc, new FileWriter(chooser.getSelectedFile()));
 			}
+			
+			// Change current file
+//			this.currentMap = fileloa		// todo
 		} catch (FileNotFoundException e1) {
 			JOptionPane.showMessageDialog(null, "Invalid file!", "error",
 					JOptionPane.ERROR_MESSAGE);
@@ -279,6 +294,9 @@ public class Controller implements ActionListener, GUIInformation {
 				String mapString = model.getMapAsString();
 				grid.redrawGrid();
 			}
+
+			// Change current file
+			this.currentMap = filelocation;
 
 		} catch (Exception e) {
 			e.printStackTrace();
