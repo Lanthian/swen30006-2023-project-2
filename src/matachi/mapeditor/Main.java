@@ -103,6 +103,7 @@ public class Main {
 
 				// run map
 				Game currentGame;
+				int count = 0;
 				for (GameMap map : mapArrayList) {
 					currentGame = new Game(map, gameCallback, properties);
 					// Wait until game is done playing
@@ -110,9 +111,12 @@ public class Main {
 
 					if (currentGame.getGameState() == GameState.Win) {
 						// Load next map
+						// todo instead of hide -> dispose
+//						currentGame.hide();
 						//					currentGame.hide();		// todo temp
 					} else if (currentGame.getGameState() == GameState.Lose) {
 						// Stop loading maps
+//						currentGame.hide();
 						//					currentGame.hide();		// todo temp
 						break;
 					} else {
@@ -129,7 +133,7 @@ public class Main {
 
 		// if its 1 file. starts edit mode of that map
 		else {
-			new Controller().loadFile(input);
+			new Controller();
 		}
 	}
 }

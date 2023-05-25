@@ -11,7 +11,7 @@ import matachi.mapeditor.Main;
 
 public class Driver {
     public static final String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
-    public static final String TEST = ""; // ""maps"; TODO
+    public static final String TEST = "maps"; // ""maps"; TODO
 
     /**
      * Starting point
@@ -44,12 +44,12 @@ public class Driver {
 //        final Properties properties = PropertiesLoader.loadPropertiesFile(propertiesPath);
 //        GameCallback gameCallback = new GameCallback();
 //
-//        GameMap map = new GameMap("maps/1test.xml");
+//        GameMap map = new GameMap("maps/1test.xml.xml");
         // check map.isValid() here before using.
 
 //        ArrayList<Map> maps = new ArrayList<Map>();
 //        for (String mapName : jjjjj) {
-//            GameMap map = new GameMap("maps/1test.xml");
+//            GameMap map = new GameMap("maps/1test.xml.xml");
 //            if (!map.isValid()) {
 //                .....
 //            }

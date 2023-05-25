@@ -84,6 +84,7 @@ public class Controller implements ActionListener, GUIInformation {
 		} else if (e.getActionCommand().equals("save")) {
 			saveFile();
 		} else if (e.getActionCommand().equals("load")) {
+			// no file present, opens the window loader
 			String input = "";
 			loadFile(input);
 		} else if (e.getActionCommand().equals("update")) {
