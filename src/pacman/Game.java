@@ -171,6 +171,11 @@ public class Game extends GameGrid
     }
   }
 
+  // Closes the game. Use with caution.
+  public void endGame() {
+    this.getFrame().dispose();
+  }
+
   // -- Getters --
   public GameCallback getGameCallback() {
     return gameCallback;

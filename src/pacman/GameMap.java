@@ -41,7 +41,6 @@ public class GameMap {
     private final static String LOGS_FOLDER = "Game Folder";
 
 
-
     // Constructor (loads in map xml file)
     public GameMap(String filepath) {
         this.filename = filepath;
@@ -140,7 +139,6 @@ public class GameMap {
 
         try {
             // Safe to assume filename is valid, as game checking done prior
-            // System.out.println(this.filename);      // todo - debug line
             String filename = this.filename.substring(this.filename.lastIndexOf("/") + 1);
             int number = Integer.parseInt(filename.split("\\D+")[0]);
             BufferedWriter buf = new BufferedWriter(new FileWriter(LOGS_FOLDER + "/" + number + "_ErrorMaplog.txt"));
@@ -190,7 +188,7 @@ public class GameMap {
                 return false;
             }
 
-            // ==========================================
+            // ========================================== (start)
             // Check if all items are accessible to pacman
             ArrayList<Location> reachable = reachableLocations();
             ArrayList<Location> unreachableGold = unreachable(reachable, this.gold);
@@ -218,6 +216,7 @@ public class GameMap {
 
                 validity = false;
             }
+            // ========================================== (done)
 
             buf.close();
         } catch (IOException e) {
@@ -256,7 +255,9 @@ public class GameMap {
 
                 // Teleport through portal if stepped on
                 for (ArrayList<Location> portalLocPair : getPortals().values()) {
-                    if (loc.equals(portalLocPair.get(0))) loc = portalLocPair.get(1);
+                    // Skip empty portal types
+                    if (portalLocPair.size() == 0) continue;
+                    else if (loc.equals(portalLocPair.get(0))) loc = portalLocPair.get(1);
                     else if (loc.equals(portalLocPair.get(1))) loc = portalLocPair.get(0);
                     else continue;
                     // Break out if portal used
@@ -265,7 +266,6 @@ public class GameMap {
 
                 // If tile hasn't been visited already
                 if (!visited.contains(loc)) {
-//                    System.out.println(5);
                     visited.add(loc);
                     toVisit.add(loc);
                 }
@@ -301,23 +301,18 @@ public class GameMap {
     public boolean isValid() {
         return validity;
     }
-
     public Location getPacLocation() {
         return pacActors.get(0);
     }
-
     public ArrayList<Location> getWalls() {
         return walls;
     }
-
     public ArrayList<Location> getPills() {
         return pills;
     }
-
     public ArrayList<Location> getGold() {
         return gold;
     }
-
     public ArrayList<Location> getIce() {
         return ice;
     }
