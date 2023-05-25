@@ -20,8 +20,6 @@ class Portal extends Actor {
         this.game.addActor(this, loc);      // Add actor to game
         this.setLocation(loc);      // Location of a portal is final
     }
-
-
 }
 
 

@@ -15,7 +15,6 @@ import java.util.*;
 
 
 public class Main {
-	static boolean isItAFolder;
 	static String log;
 	private static FileWriter fileWriter = null;
 	private static String logFilePath = "GameCheckingLog.txt";
@@ -46,9 +45,10 @@ public class Main {
 
 		// gets input
 		String input = "";
+		boolean isFolder;
 		if (args.length > 0) {
 			input = args[0];
-			isItAFolder = GameChecking.isFolder(input);
+			isFolder = GameChecking.isFolder(input);
 		}
 		// if input is empty is null, runs editor with no map
 		else {
@@ -57,7 +57,7 @@ public class Main {
 		}
 
 		// if folder, checks if its a valid folder
-		if (isItAFolder) {
+		if (isFolder) {
 			File root = new File(input);
 			String rootPath = root.getPath();
 			List<String> xmlFiles = GameChecking.getXMLFiles(input);
@@ -66,7 +66,7 @@ public class Main {
 				log = "[Game " + input + " – no maps found]";
 				writeString(log);
 				new Controller();
-//				return;
+				return;
 			}
 
 			// then need to sort string numerically
@@ -131,7 +131,7 @@ public class Main {
 
 		// if its 1 file. starts edit mode of that map
 		else {
-			new Controller();
+			new Controller().loadFile(input);
 		}
 	}
 }

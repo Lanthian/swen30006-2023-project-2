@@ -98,7 +98,6 @@ public class Controller implements ActionListener, GUIInformation {
 			loadFile(input);
 		} else if (e.getActionCommand().equals("update")) {
 			updateGrid(gridWith, gridHeight);
-		}
 
 		// === Start Game button removed (not in spec) ===
 //		// Loads a single map
@@ -117,11 +116,12 @@ public class Controller implements ActionListener, GUIInformation {
 //
 //					Game currentGame = new Game(currentMap, gameCallback, properties);
 //					// Wait for game to finish
+//					currentGame.show();
 //					while (currentGame.getGameState() == GameState.Active);
 ////					currentGame.hide(); // todo
 //				}
 //			}
-//		}
+		}
 	}
 
 	public void updateGrid(int width, int height) {

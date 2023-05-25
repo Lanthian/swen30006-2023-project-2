@@ -156,7 +156,7 @@ public class Game extends GameGrid
 
     // Update game title if player
     if (type == ActorType.Player) {
-      String title = "[PacMan in the Multiverse] Current score: " + pacActorSingleton.getScore();
+      String title = "[PacMan in the TorusVerse] Current score: " + pacActorSingleton.getScore();
       setTitle(title);
 
       // Check if Pacman has won

@@ -11,13 +11,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class GameMap {
+    // --- Attributes ---
     private final String filename;
     private final boolean validity;
 
@@ -37,6 +34,10 @@ public class GameMap {
 
     private int width;
     private int height;
+
+    // --- Constant(s) ---
+    private static final Location.CompassDirection[] ANGLES = {Location.NORTH,
+            Location.EAST,Location.SOUTH,Location.WEST};
 
 
     // Constructor (loads in map xml file)
@@ -181,9 +182,40 @@ public class GameMap {
                 validity = false;
             }
 
-            // Check if all items are accessible to pacman
-            // todo
-//            PacActorSingleton.getValidMoves
+            // Terminate early if anything above failed (don't check reachability!)
+            if (!validity) {
+                buf.close();
+                return false;
+            }
+
+            // ==========================================
+//            // Check if all items are accessible to pacman
+//            ArrayList<Location> reachable = reachableLocations();
+//            ArrayList<Location> unreachableGold = unreachable(reachable, this.gold);
+//            ArrayList<Location> unreachablePills = unreachable(reachable, this.pills);
+//
+//            // (Gold)
+//            if (unreachableGold.size() > 0) {
+//                buf.write("[Level " + this.filename + " – Gold not accessible:");
+//                for (Location loc : unreachableGold) {
+//                    buf.write(" " + loc + ";");
+//                }
+//                buf.write("]");
+//                buf.newLine();
+//
+//                validity = false;
+//            }
+//            // (Pills)
+//            if (unreachablePills.size() > 0) {
+//                buf.write("[Level " + this.filename + " – Pill not accessible:");
+//                for (Location loc : unreachablePills) {
+//                    buf.write(" " + loc + ";");
+//                }
+//                buf.write("]");
+//                buf.newLine();
+//
+//                validity = false;
+//            }
 
             buf.close();
         } catch (IOException e) {
@@ -194,6 +226,60 @@ public class GameMap {
     }
 
 
+    /* Note that the starting location is not considered visited until stepped back on this. This is by design as
+    * Pacman cannot collect loot by standing onto it, they have to __step__ onto it. */
+    private ArrayList<Location> reachableLocations() {
+        ArrayList<Location> visited = new ArrayList<>();
+        Queue<Location> toVisit = new LinkedList<>();
+        // Start at pacActor location
+        toVisit.add(getPacLocation());
+
+        // Build list of visitable locations for pacActor
+        while (toVisit.size() > 0) {
+            // Try each cardinal direction to find an untraveled tile
+            for (Location.CompassDirection dir : ANGLES) {
+                Location loc = toVisit.peek().getNeighbourLocation(dir);
+                if (loc == null) {
+                    System.out.println("huh");
+                    continue;
+                }
+
+                // Teleport through portal if stepped on
+                for (ArrayList<Location> portalLocPair : getPortals().values()) {
+                    if (loc.equals(portalLocPair.get(0))) loc = portalLocPair.get(1);
+                    else if (loc.equals(portalLocPair.get(1))) loc = portalLocPair.get(0);
+                    else continue;
+                    // Break out if portal used
+                    break;
+                }
+
+                // If tile hasn't been checked and isn't a wall
+                if (!visited.contains(loc) && !this.walls.contains(loc)) {
+                    visited.add(loc);
+                    toVisit.add(loc);
+                }
+            }
+
+            // Drop move stepped from queue
+            toVisit.remove();
+        }
+
+        return visited;
+    }
+
+    private ArrayList<Location> unreachable(ArrayList<Location> reachable, ArrayList<Location> desired) {
+        // Locate and return queried impossible to reach areas
+        ArrayList<Location> unreachable = new ArrayList<>();
+
+        for (Location target : desired) {
+                if (!reachable.contains(target)) {
+                    unreachable.add(target);
+                }
+        }
+        return unreachable;
+    }
+
+
     // -- Getters --
     public int getWidth() {
         return this.width;
@@ -201,7 +287,6 @@ public class GameMap {
     public int getHeight() {
         return this.height;
     }
-
     public boolean isValid() {
         return validity;
     }
