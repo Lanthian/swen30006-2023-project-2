@@ -1,19 +1,18 @@
-// PacActor.java
+// PacActorSingleton.java
 // Used for PacMan
 package pacman;
 
 import ch.aplu.jgamegrid.*;
-import jdk.jshell.execution.LoaderDelegate;
 
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.util.*;
 
 
-public class PacActor extends Actor implements GGKeyRepeatListener
+public class PacActorSingleton extends Actor implements GGKeyRepeatListener
 {
   // Singleton instance
-  private static PacActor singleton = null;
+  private static PacActorSingleton singleton = null;
 
   private GameState gameState;
   private static final int nbSprites = 4;
@@ -33,15 +32,15 @@ public class PacActor extends Actor implements GGKeyRepeatListener
   private ArrayList<Location> queuedMoves = new ArrayList<>();
 
   // Constructor
-  private PacActor() {
+  private PacActorSingleton() {
     super(true, "sprites/pacpix.gif", nbSprites);   // Rotatable
   }
 
   // Singleton retriever
-  public static PacActor getPacActor(Game game)
+  public static PacActorSingleton getInstance(Game game)
   {
     if (singleton == null) {
-      singleton = new PacActor();
+      singleton = new PacActorSingleton();
     }
     singleton.setGame(game);  // Set current game
     singleton.score = 0;      // Reset score if not 0.

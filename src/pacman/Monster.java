@@ -97,7 +97,7 @@ public abstract class Monster extends Actor implements ActorCollidable
 
     // Check for collision
     if (this.getLocation().equals(actor.getLocation())) {
-      ((PacActor)actor).loseGame();
+      ((PacActorSingleton)actor).loseGame();
     }
     // Otherwise no collision, do nothing
   }

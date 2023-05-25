@@ -89,7 +89,7 @@ public class Main {
 					if (!map.isValid()) {
 						// if not valid open editor for that map
 						new Controller().loadFile(fullPath);
-						break;
+						return;
 					}
 					else {
 						// if valid add to arraylist map

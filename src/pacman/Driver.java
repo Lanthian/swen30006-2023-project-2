@@ -11,7 +11,7 @@ import matachi.mapeditor.Main;
 
 public class Driver {
     public static final String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
-    public static final String TEST = "maps";
+    public static final String TEST = "maps/1SpecMap.xml";
 
     /**
      * Starting point
@@ -21,6 +21,7 @@ public class Driver {
     public static void main(String args[]) {
         String propertiesPath = DEFAULT_PROPERTIES_PATH;
 
+        // todo - remember to change args active reading
 
         // gets input for the startup
         String input = "";

@@ -24,7 +24,7 @@ public class Ice extends Item {
 
 
     @Override
-    public void eat(PacActor pacActor) {
+    public void eat(PacActorSingleton pacActorSingleton) {
         // Only eat uneaten items
         if (!this.eaten) {
             this.eaten = true;

@@ -25,7 +25,7 @@ public class Pill extends Item {
 
 
     @Override
-    public void eat(PacActor pacActor) {
+    public void eat(PacActorSingleton pacActorSingleton) {
         // Only eat uneaten items
         if (!this.eaten) {
             this.eaten = true;
@@ -33,13 +33,13 @@ public class Pill extends Item {
             this.game.getGameCallback().pacManEatPillsAndItems(this.getLocation(), "pills");
 
             // Update pacman
-            updatePacActor(pacActor);
+            updatePacActor(pacActorSingleton);
         }
     }
 
     @Override
-    protected void updatePacActor(PacActor pacActor) {
-        pacActor.addScore(this.value);
-        pacActor.incrementNbPills();
+    protected void updatePacActor(PacActorSingleton pacActorSingleton) {
+        pacActorSingleton.addScore(this.value);
+        pacActorSingleton.incrementNbPills();
     }
 }

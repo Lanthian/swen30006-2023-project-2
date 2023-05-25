@@ -14,8 +14,8 @@ public class Game extends GameGrid
   protected PacManGameGrid grid = new PacManGameGrid(nbHorzCells, nbVertCells);
   // === Actors ===
   // Retrieve singleton pacActor, setting current game to this instance
-  protected PacActor pacActor = PacActor.getPacActor(this);
-  private ArrayList<ActorCollidable> collidables = new ArrayList<>();
+  protected PacActorSingleton pacActorSingleton = PacActorSingleton.getInstance(this);
+  private final ArrayList<ActorCollidable> collidables = new ArrayList<>();
 
   private ArrayList<Monster> monsters = new ArrayList<>();
   private ArrayList<Item> items = new ArrayList<>();
@@ -61,8 +61,8 @@ public class Game extends GameGrid
     this.collidables.addAll(portalPairs);
 
     // === Load pacActor ===
-    pacActor.setAuto(Boolean.parseBoolean(properties.getProperty("PacMan.isAuto")));
-    addActor(pacActor, map.getPacLocation());
+    pacActorSingleton.setAuto(Boolean.parseBoolean(properties.getProperty("PacMan.isAuto")));
+    addActor(pacActorSingleton, map.getPacLocation());
 
     // === Load items ===
     for (Location loc : map.getGold()) {
@@ -83,7 +83,7 @@ public class Game extends GameGrid
 
     // === Load monsters ===
     // Monster array and factory to reduce redundant code later
-    MonsterFactory mFactory = MonsterFactory.getMonsterFactory();
+    MonsterFactorySingleton mFactory = MonsterFactorySingleton.getMonsterFactory();
     // Iterate through monstertype, locationlist pairs
     for (Map.Entry<MonsterType, ArrayList<Location>> entry : map.getMonsters().entrySet()) {
       // Iterate through locations and add monsters to the game
@@ -98,11 +98,11 @@ public class Game extends GameGrid
     // Setup Random seeds and speed for pacActor
     this.seed = Integer.parseInt(properties.getProperty("seed"));
 
-    pacActor.setSeed(seed);
-    pacActor.setSlowDown(3);
+    pacActorSingleton.setSeed(seed);
+    pacActorSingleton.setSlowDown(3);
 
     // Set pacActor movement and other monster uniques
-    addKeyRepeatListener(pacActor);
+    addKeyRepeatListener(pacActorSingleton);
     setKeyRepeatPeriod(150);
 
 
@@ -117,21 +117,21 @@ public class Game extends GameGrid
     do {
       // Collision is checked each time pacActor or Monster moves (not done here)
 
-      hasPacmanEatAllPills = pacActor.getNbPills() >= maxPillsAndItems;
+      hasPacmanEatAllPills = pacActorSingleton.getNbPills() >= maxPillsAndItems;
       // todo - replace with pacman gamestate some how
       delay(10);
-    } while(pacActor.getGameState() != GameState.Lose && !hasPacmanEatAllPills);
+    } while(pacActorSingleton.getGameState() != GameState.Lose && !hasPacmanEatAllPills);
     delay(120);
 
     for (Monster monster : monsters) {
       monster.setStopMoving(true);
     }
-    Location endLocation = pacActor.getLocation();
-    pacActor.removeSelf();
+    Location endLocation = pacActorSingleton.getLocation();
+    pacActorSingleton.removeSelf();
 
 
     String title = "";
-    if (pacActor.getGameState() == GameState.Lose) {
+    if (pacActorSingleton.getGameState() == GameState.Lose) {
       bg.setPaintColor(Color.red);
       title = "GAME OVER";
       addActor(new Actor("sprites/explosion3.gif"), endLocation);
@@ -158,13 +158,13 @@ public class Game extends GameGrid
 
     // Update game title if player
     if (type == ActorType.Player) {
-      String title = "[PacMan in the Multiverse] Current score: " + pacActor.getScore();
+      String title = "[PacMan in the Multiverse] Current score: " + pacActorSingleton.getScore();
       setTitle(title);
     }
 
     // Check for player collision if monster
     else if (type == ActorType.Monster) {
-      ((Monster)actor).checkAndCollide(pacActor, ActorType.Player);
+      ((Monster)actor).checkAndCollide(pacActorSingleton, ActorType.Player);
     }
   }
 

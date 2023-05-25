@@ -18,12 +18,12 @@ public class PathFinder {
 
 
 
-    public ArrayList<Location> findNextLoc(PacActor pacActor) {
+    public ArrayList<Location> findNextLoc(PacActorSingleton pacActorSingleton) {
         // Build a queue of possible pathways to acceptable outcome
         Queue<ArrayList<Location>> queue = new LinkedList<ArrayList<Location>>();
         ArrayList<Location> visited = new ArrayList<>();
 
-        for (Location loc : pacActor.getValidMoves(pacActor.getLocation())) {
+        for (Location loc : pacActorSingleton.getValidMoves(pacActorSingleton.getLocation())) {
             queue.add(new ArrayList<Location>(Arrays.asList(loc)));
             visited.add(loc);
         }
@@ -49,7 +49,7 @@ public class PathFinder {
             }
 
             // Not exited, so queue up more locations from this path
-            for (Location loc : pacActor.getValidMoves(transformedLastMove)) {
+            for (Location loc : pacActorSingleton.getValidMoves(transformedLastMove)) {
                 // Make sure not to revisit tiles
                 if (visited.contains(loc)) continue;
                 visited.add(loc);

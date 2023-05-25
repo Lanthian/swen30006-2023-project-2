@@ -47,18 +47,18 @@ public abstract class Item extends Actor implements ActorCollidable {
 
         if (this.getLocation().equals(actor.getLocation())) {
             // Call each method
-            this.eat((PacActor)actor);
+            this.eat((PacActorSingleton)actor);
         }
     }
 
     /**
      * Performs eat operation on a given, extended Item. O
      */
-    public void eat(PacActor pacActor) {
+    public void eat(PacActorSingleton pacActorSingleton) {
         // do nothing - override when extended
     }
 
-    protected void updatePacActor(PacActor pacActor) {
+    protected void updatePacActor(PacActorSingleton pacActorSingleton) {
         // do nothing - override when extended
     }
 

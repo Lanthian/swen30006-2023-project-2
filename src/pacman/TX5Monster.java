@@ -10,7 +10,7 @@ public class TX5Monster extends TrollMonster {
 
     @Override
     protected void walkApproach() {
-        Location pacLocation = game.pacActor.getLocation();
+        Location pacLocation = game.pacActorSingleton.getLocation();
         double oldDirection = this.getDirection();
 
         // Determine direction to pacActor and try to move in that direction.

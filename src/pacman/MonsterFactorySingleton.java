@@ -1,9 +1,9 @@
 // MonsterFactory.java
 package pacman;
 
-public class MonsterFactory {
+public class MonsterFactorySingleton {
     // Singleton instance
-    private static MonsterFactory singleton = null;
+    private static MonsterFactorySingleton singleton = null;
 
     // --- Attributes & Constants ---
     private final static int TX5_DELAY = 5;
@@ -11,13 +11,13 @@ public class MonsterFactory {
 
 
     // Constructor
-    private MonsterFactory() {
+    private MonsterFactorySingleton() {
     }
 
     // Factory singleton retriever
-    public static MonsterFactory getMonsterFactory() {
+    public static MonsterFactorySingleton getMonsterFactory() {
         if (singleton == null) {
-            singleton = new MonsterFactory();
+            singleton = new MonsterFactorySingleton();
         }
         return singleton;
     }
