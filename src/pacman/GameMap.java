@@ -183,7 +183,7 @@ public class GameMap {
 
             // Check if all items are accessible to pacman
             // todo
-//            for
+//            PacActorSingleton.getValidMoves
 
             buf.close();
         } catch (IOException e) {

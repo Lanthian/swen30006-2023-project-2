@@ -98,28 +98,30 @@ public class Controller implements ActionListener, GUIInformation {
 			loadFile(input);
 		} else if (e.getActionCommand().equals("update")) {
 			updateGrid(gridWith, gridHeight);
-
-		// Loads a single map
-		} else if (e.getActionCommand().equals("start_game")) {
-
-			// Check that a map has been loaded or saved
-			if (this.currentMap != null) {
-				GameMap currentMap = new GameMap(this.currentMap);
-				// Check if level is valid before loading
-				if (currentMap.isValid()) {
-
-					// Launch game
-
-					Properties properties = PropertiesLoader.loadPropertiesFile(DEFAULT_PROPERTIES_PATH);
-					GameCallback gameCallback = new GameCallback();
-
-					Game currentGame = new Game(currentMap, gameCallback, properties);
-					// Wait for game to finish
-					while (currentGame.getGameState() == GameState.Active);
-//					currentGame.hide(); // todo
-				}
-			}
 		}
+
+		// === Start Game button removed (not in spec) ===
+//		// Loads a single map
+//		} else if (e.getActionCommand().equals("start_game")) {
+//
+//			// Check that a map has been loaded or saved
+//			if (this.currentMap != null) {
+//				GameMap currentMap = new GameMap(this.currentMap);
+//				// Check if level is valid before loading
+//				if (currentMap.isValid()) {
+//
+//					// Launch game
+//
+//					Properties properties = PropertiesLoader.loadPropertiesFile(DEFAULT_PROPERTIES_PATH);
+//					GameCallback gameCallback = new GameCallback();
+//
+//					Game currentGame = new Game(currentMap, gameCallback, properties);
+//					// Wait for game to finish
+//					while (currentGame.getGameState() == GameState.Active);
+////					currentGame.hide(); // todo
+//				}
+//			}
+//		}
 	}
 
 	public void updateGrid(int width, int height) {

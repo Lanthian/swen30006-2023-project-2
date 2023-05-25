@@ -84,9 +84,10 @@ public class View {
 		loadButton.addActionListener(controller);
 		loadButton.setActionCommand("load");
 
-		JButton startGameButton = new JButton("Start Game");
-		startGameButton.addActionListener(controller);
-		startGameButton.setActionCommand("start_game");
+		// === Start Game button removed (not in spec) ===
+//		JButton startGameButton = new JButton("Start Game");
+//		startGameButton.addActionListener(controller);
+//		startGameButton.setActionCommand("start_game");
 
 
 		JPanel right = new JPanel();
@@ -96,7 +97,9 @@ public class View {
 		// right.add(showGridButton);
 		right.add(saveButton);
 		right.add(loadButton);
-		right.add(startGameButton);
+
+		// === Start Game button removed (not in spec) ===
+//		right.add(startGameButton);
 
 		/** The top panel, that shows coordinates and stuff. */
 		CameraInformationLabel cameraInformationLabel = new CameraInformationLabel(
@@ -109,11 +112,11 @@ public class View {
 
 		txtWidth = new JTextField(Constants.MAP_WIDTH + "", 3);
 		txtWidth.getDocument().addDocumentListener(controller.updateSizeFields);
-//		txtWidth.setEnabled(true);
+		txtWidth.setEnabled(false);
 		txtHeight = new JTextField(Constants.MAP_HEIGHT + "", 3);
 		txtHeight.getDocument()
 				.addDocumentListener(controller.updateSizeFields);
-//		txtHeight.setEnabled(true);
+		txtHeight.setEnabled(false);
 		JButton updateSize = new JButton("Reset");
 		updateSize.addActionListener(controller);
 		updateSize.setActionCommand("update");
