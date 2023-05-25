@@ -7,7 +7,11 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import pacman.Driver;
+import pacman.Game;
 import pacman.GameMap;
+import pacman.GameState;
+import pacman.utility.GameCallback;
+import pacman.utility.PropertiesLoader;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -17,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Controller of the application.
@@ -44,6 +49,9 @@ public class Controller implements ActionListener, GUIInformation {
 	private int gridWith = Constants.MAP_WIDTH;
 	private int gridHeight = Constants.MAP_HEIGHT;
 
+
+	private final static String MAPS_FOLDER = "Game Folder";
+	private final static String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
 	private String currentMap;
 
 
@@ -84,28 +92,30 @@ public class Controller implements ActionListener, GUIInformation {
 		} else if (e.getActionCommand().equals("save")) {
 			saveFile();
 		} else if (e.getActionCommand().equals("load")) {
+			// no file present, opens the window loader
 			String input = "";	// todo
 			loadFile(input);
 		} else if (e.getActionCommand().equals("update")) {
 			updateGrid(gridWith, gridHeight);
+
+		// Loads a single map
 		} else if (e.getActionCommand().equals("start_game")) {
-//			// todo
-//			Driver driver = new Driver();
-//
-//			String[] temp;
-//			temp = new String[0];
-////			temp = DEFAULT_PROPERTIES_PATH;
-//			// todo todo todo todo
-////			driver.main(temp);
-			System.out.println(this.currentMap);
 
 			// Check that a map has been loaded or saved
 			if (this.currentMap != null) {
 				GameMap currentMap = new GameMap(this.currentMap);
-				System.out.println("Hello");
 				// Check if level is valid before loading
 				if (currentMap.isValid()) {
-					System.out.println("hello2");
+
+					// Launch game
+
+					Properties properties = PropertiesLoader.loadPropertiesFile(DEFAULT_PROPERTIES_PATH);
+					GameCallback gameCallback = new GameCallback();
+
+					Game currentGame = new Game(currentMap, gameCallback, properties);
+					// Wait for game to finish
+					while (currentGame.getGameState() == GameState.Active);
+//					currentGame.hide(); // todo
 				}
 			}
 		}
@@ -147,7 +157,6 @@ public class Controller implements ActionListener, GUIInformation {
 		int returnVal = chooser.showSaveDialog(null);
 		try {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-
 				Element level = new Element("level");
 				Document doc = new Document(level);
 				doc.setRootElement(level);
@@ -195,12 +204,15 @@ public class Controller implements ActionListener, GUIInformation {
 				}
 				XMLOutputter xmlOutput = new XMLOutputter();
 				xmlOutput.setFormat(Format.getPrettyFormat());
-				xmlOutput
-						.output(doc, new FileWriter(chooser.getSelectedFile()));
+
+				// Output file
+				File outFile = chooser.getSelectedFile();
+				xmlOutput.output(doc, new FileWriter(outFile));
+
+				// Change current file
+				this.currentMap = MAPS_FOLDER + "/" + outFile.getName();
 			}
 
-			// Change current file
-//			this.currentMap = fileloa		// todo
 		} catch (FileNotFoundException e1) {
 			JOptionPane.showMessageDialog(null, "Invalid file!", "error",
 					JOptionPane.ERROR_MESSAGE);
@@ -295,8 +307,7 @@ public class Controller implements ActionListener, GUIInformation {
 			}
 
 			// Change current file
-			this.currentMap = selectedFile.getParent();
-			System.out.println(this.currentMap);
+			this.currentMap = MAPS_FOLDER + "/" + selectedFile.getName();
 
 		} catch (Exception e) {
 			e.printStackTrace();
