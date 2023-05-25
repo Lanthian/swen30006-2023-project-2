@@ -151,7 +151,7 @@ public class GameMap {
             } else if (pacActors.size() > 1) {
                 buf.write("[Level " + this.filename + " – more than one start for Pacman:");
                 for (Location loc : pacActors) {
-                    buf.write(" " + loc + ";");
+                    buf.write(" " + locFixer(loc) + ";");
                 }
                 buf.write("]");
                 buf.newLine();
@@ -166,7 +166,7 @@ public class GameMap {
                 if (portalArray.size() != 2 && portalArray.size() != 0) {
                     buf.write("[Level " + this.filename + " – portal " + portalColours.get(i) + " count is not 2:");
                     for (Location loc : portalArray) {
-                        buf.write(" " + loc + ";");
+                        buf.write(" " + locFixer(loc) + ";");
                     }
                     buf.write("]");
                     buf.newLine();
@@ -198,7 +198,7 @@ public class GameMap {
             if (unreachableGold.size() > 0) {
                 buf.write("[Level " + this.filename + " – Gold not accessible:");
                 for (Location loc : unreachableGold) {
-                    buf.write(" " + loc + ";");
+                    buf.write(" " + locFixer(loc) + ";");
                 }
                 buf.write("]");
                 buf.newLine();
@@ -209,7 +209,7 @@ public class GameMap {
             if (unreachablePills.size() > 0) {
                 buf.write("[Level " + this.filename + " – Pill not accessible:");
                 for (Location loc : unreachablePills) {
-                    buf.write(" " + loc + ";");
+                    buf.write(" " + locFixer(loc) + ";");
                 }
                 buf.write("]");
                 buf.newLine();
@@ -288,6 +288,11 @@ public class GameMap {
                 }
         }
         return unreachable;
+    }
+
+    // Helper function to adjust locations when printing (to deal with off by 1 diagonal errors)
+    private Location locFixer(Location loc) {
+        return new Location(loc.getX()+1,loc.getY()+1);
     }
 
 
