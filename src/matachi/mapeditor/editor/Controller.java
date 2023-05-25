@@ -84,7 +84,7 @@ public class Controller implements ActionListener, GUIInformation {
 		} else if (e.getActionCommand().equals("save")) {
 			saveFile();
 		} else if (e.getActionCommand().equals("load")) {
-			String input = "";
+			String input = "";	// todo
 			loadFile(input);
 		} else if (e.getActionCommand().equals("update")) {
 			updateGrid(gridWith, gridHeight);
@@ -97,14 +97,15 @@ public class Controller implements ActionListener, GUIInformation {
 ////			temp = DEFAULT_PROPERTIES_PATH;
 //			// todo todo todo todo
 ////			driver.main(temp);
+			System.out.println(this.currentMap);
 
 			// Check that a map has been loaded or saved
 			if (this.currentMap != null) {
 				GameMap currentMap = new GameMap(this.currentMap);
-
+				System.out.println("Hello");
 				// Check if level is valid before loading
 				if (currentMap.isValid()) {
-
+					System.out.println("hello2");
 				}
 			}
 		}
@@ -197,7 +198,7 @@ public class Controller implements ActionListener, GUIInformation {
 				xmlOutput
 						.output(doc, new FileWriter(chooser.getSelectedFile()));
 			}
-			
+
 			// Change current file
 //			this.currentMap = fileloa		// todo
 		} catch (FileNotFoundException e1) {
@@ -213,16 +214,14 @@ public class Controller implements ActionListener, GUIInformation {
 		boolean hasFile;
 		if (filelocation.equals("")) {
 			hasFile = false;
-		}
-		else {
+		} else {
 			hasFile = true;
 		}
 		try {
 			File selectedFile;
 			if (hasFile) {
 				selectedFile = new File(filelocation);
-			}
-			else {
+			} else {
 				JFileChooser chooser = new JFileChooser();
 				BufferedReader in;
 				FileReader reader = null;
@@ -296,14 +295,13 @@ public class Controller implements ActionListener, GUIInformation {
 			}
 
 			// Change current file
-			this.currentMap = filelocation;
+			this.currentMap = selectedFile.getParent();
+			System.out.println(this.currentMap);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-
 
 
 	/**
