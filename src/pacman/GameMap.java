@@ -189,33 +189,33 @@ public class GameMap {
             }
 
             // ==========================================
-//            // Check if all items are accessible to pacman
-//            ArrayList<Location> reachable = reachableLocations();
-//            ArrayList<Location> unreachableGold = unreachable(reachable, this.gold);
-//            ArrayList<Location> unreachablePills = unreachable(reachable, this.pills);
-//
-//            // (Gold)
-//            if (unreachableGold.size() > 0) {
-//                buf.write("[Level " + this.filename + " – Gold not accessible:");
-//                for (Location loc : unreachableGold) {
-//                    buf.write(" " + loc + ";");
-//                }
-//                buf.write("]");
-//                buf.newLine();
-//
-//                validity = false;
-//            }
-//            // (Pills)
-//            if (unreachablePills.size() > 0) {
-//                buf.write("[Level " + this.filename + " – Pill not accessible:");
-//                for (Location loc : unreachablePills) {
-//                    buf.write(" " + loc + ";");
-//                }
-//                buf.write("]");
-//                buf.newLine();
-//
-//                validity = false;
-//            }
+            // Check if all items are accessible to pacman
+            ArrayList<Location> reachable = reachableLocations();
+            ArrayList<Location> unreachableGold = unreachable(reachable, this.gold);
+            ArrayList<Location> unreachablePills = unreachable(reachable, this.pills);
+
+            // (Gold)
+            if (unreachableGold.size() > 0) {
+                buf.write("[Level " + this.filename + " – Gold not accessible:");
+                for (Location loc : unreachableGold) {
+                    buf.write(" " + loc + ";");
+                }
+                buf.write("]");
+                buf.newLine();
+
+                validity = false;
+            }
+            // (Pills)
+            if (unreachablePills.size() > 0) {
+                buf.write("[Level " + this.filename + " – Pill not accessible:");
+                for (Location loc : unreachablePills) {
+                    buf.write(" " + loc + ";");
+                }
+                buf.write("]");
+                buf.newLine();
+
+                validity = false;
+            }
 
             buf.close();
         } catch (IOException e) {
@@ -240,7 +240,15 @@ public class GameMap {
             for (Location.CompassDirection dir : ANGLES) {
                 Location loc = toVisit.peek().getNeighbourLocation(dir);
                 if (loc == null) {
-                    System.out.println("huh");
+                    System.out.println("DEBUG: Null location from neighbour in reachableLocations()");
+                    continue;
+                }
+
+                // Skip location if out of bounds
+                int X = loc.getX(), Y = loc.getY();
+                if (this.walls.contains(loc)) {
+                    continue;
+                } else if (X<0 || X>this.width || Y<0 || Y >this.height) {
                     continue;
                 }
 
@@ -253,8 +261,9 @@ public class GameMap {
                     break;
                 }
 
-                // If tile hasn't been checked and isn't a wall
-                if (!visited.contains(loc) && !this.walls.contains(loc)) {
+                // If tile hasn't been visited already
+                if (!visited.contains(loc)) {
+//                    System.out.println(5);
                     visited.add(loc);
                     toVisit.add(loc);
                 }
