@@ -131,7 +131,7 @@ public class GameMap {
     }
 
 
-    public boolean levelChecking() {
+    private boolean levelChecking() {
         boolean validity = true;
 
 

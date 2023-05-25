@@ -116,11 +116,9 @@ public class Game extends GameGrid
 
     do {
       // Collision is checked each time pacActor or Monster moves (not done here)
-
-      hasPacmanEatAllPills = pacActorSingleton.getNbPills() >= maxPillsAndItems;
-      // todo - replace with pacman gamestate some how
+      // Game winning (eat all pills) is checked too (not done here)
       delay(10);
-    } while(pacActorSingleton.getGameState() != GameState.Lose && !hasPacmanEatAllPills);
+    } while(pacActorSingleton.getGameState() == GameState.Active);
     delay(120);
 
     for (Monster monster : monsters) {
@@ -135,7 +133,7 @@ public class Game extends GameGrid
       bg.setPaintColor(Color.red);
       title = "GAME OVER";
       addActor(new Actor("sprites/explosion3.gif"), endLocation);
-    } else if (hasPacmanEatAllPills) {
+    } else if (pacActorSingleton.getGameState() == GameState.Win) {
       bg.setPaintColor(Color.yellow);
       title = "YOU WIN";
     }
@@ -160,6 +158,11 @@ public class Game extends GameGrid
     if (type == ActorType.Player) {
       String title = "[PacMan in the Multiverse] Current score: " + pacActorSingleton.getScore();
       setTitle(title);
+
+      // Check if Pacman has won
+      if (getRemainingLoot().size() == 0) {
+        pacActorSingleton.winGame();
+      }
     }
 
     // Check for player collision if monster
@@ -183,6 +186,9 @@ public class Game extends GameGrid
   }
   public ArrayList<PortalPair> getPortals() {
     return this.portalPairs;
+  }
+  public GameState getGameState() {
+    return (pacActorSingleton.getGameState());
   }
 
   /**

@@ -42,8 +42,9 @@ public class PacActorSingleton extends Actor implements GGKeyRepeatListener
     if (singleton == null) {
       singleton = new PacActorSingleton();
     }
-    singleton.setGame(game);  // Set current game
-    singleton.score = 0;      // Reset score if not 0.
+    singleton.setGame(game);                  // Set current game
+    singleton.gameState = GameState.Active;   // Reset pacman state
+    singleton.score = 0;                      // Reset score if not 0.
     return singleton;
   }
 
@@ -59,11 +60,6 @@ public class PacActorSingleton extends Actor implements GGKeyRepeatListener
     randomiser.setSeed(seed);
   }
 
-  public void setPropertyMoves(String propertyMoveString) {
-    if (propertyMoveString != null) {
-      this.propertyMoves = Arrays.asList(propertyMoveString.split(","));
-    }
-  }
 
   public void keyRepeated(int keyCode)
   {
@@ -140,14 +136,6 @@ public class PacActorSingleton extends Actor implements GGKeyRepeatListener
       visitedList.remove(0);
   }
 
-  private boolean isVisited(Location location)
-  {
-    for (Location loc : visitedList)
-      if (loc.equals(location))
-        return true;
-    return false;
-  }
-
   private boolean canMove(Location location)
   {
     Color c = getBackground().getColor(location);
@@ -193,6 +181,9 @@ public class PacActorSingleton extends Actor implements GGKeyRepeatListener
 
   public GameState getGameState() {
     return singleton.gameState;
+  }
+  public void winGame() {
+    singleton.gameState = GameState.Win;
   }
 
   public void loseGame() {

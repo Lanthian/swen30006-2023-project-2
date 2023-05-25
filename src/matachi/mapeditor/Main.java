@@ -3,6 +3,7 @@ package matachi.mapeditor;
 import matachi.mapeditor.editor.Controller;
 import pacman.Game;
 import pacman.GameMap;
+import pacman.GameState;
 import pacman.utility.GameCallback;
 import pacman.utility.PropertiesLoader;
 
@@ -52,6 +53,7 @@ public class Main {
 		// if input is empty is null, runs editor with no map
 		else {
 			new Controller();
+			return;
 		}
 
 		// if folder, checks if its a valid folder
@@ -64,6 +66,7 @@ public class Main {
 				log = "[Game " + input + " – no maps found]";
 				writeString(log);
 				new Controller();
+//				return;
 			}
 
 			// then need to sort string numerically
@@ -76,8 +79,10 @@ public class Main {
 					writeString(log);
 					// open blank editor
 					new Controller();
+					return;
 				}
 
+				// -- Check for invalid levels --
 				// array of maps string
 				// need to convert string to array maps
 				System.out.println(xmlFiles);
@@ -90,17 +95,35 @@ public class Main {
 						// if not valid open editor for that map
 						new Controller().loadFile(fullPath);
 						return;
-					}
-					else {
+					} else {
 						// if valid add to arraylist map
 						mapArrayList.add(map);
 					}
 				}
 
 				// run map
+				Game currentGame;
 				for (GameMap map : mapArrayList) {
-					new Game(map, gameCallback, properties);
+					currentGame = new Game(map, gameCallback, properties);
+					// Wait until game is done playing
+					while (currentGame.getGameState() == GameState.Active);
+
+					if (currentGame.getGameState() == GameState.Win) {
+						// Load next map
+						//					currentGame.hide();		// todo temp
+					} else if (currentGame.getGameState() == GameState.Lose) {
+						// Stop loading maps
+						//					currentGame.hide();		// todo temp
+						break;
+					} else {
+						// Nonexistent game state returned
+						System.out.println("DEBUG: Fake game state");
+						return;
+					}
 				}
+
+				// Successfully ran maps, start editor
+				new Controller();
 			}
 		}
 
