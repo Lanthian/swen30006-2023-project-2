@@ -133,7 +133,7 @@ public class Main {
 
 		// if its 1 file. starts edit mode of that map
 		else {
-			new Controller();
+			new Controller().loadFile(input);
 		}
 	}
 }
