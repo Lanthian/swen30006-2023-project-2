@@ -8,11 +8,13 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 // Pacman package classes
-import pacman.Game;
-import pacman.GameMap;
-import pacman.GameState;
-import pacman.utility.GameCallback;
-import pacman.utility.PropertiesLoader;
+// === Start Game button removed (not in spec) ===
+//import pacman.Game;
+//import pacman.GameMap;
+//import pacman.GameState;
+//import pacman.utility.GameCallback;
+//import pacman.utility.PropertiesLoader;
+//import java.util.Properties;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -22,7 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.List;
-import java.util.Properties;
+
 
 /**
  * Controller of the application.
@@ -52,8 +54,9 @@ public class Controller implements ActionListener, GUIInformation {
 
 
 	private final static String MAPS_FOLDER = "Game Folder";
-	private final static String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
-	private String currentMap;
+	// === Start Game button removed (not in spec) ===
+//	private final static String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
+//	private String currentMap;
 
 
 	/**
@@ -212,8 +215,9 @@ public class Controller implements ActionListener, GUIInformation {
 				File outFile = chooser.getSelectedFile();
 				xmlOutput.output(doc, new FileWriter(outFile));
 
-				// Change current file
-				this.currentMap = MAPS_FOLDER + "/" + outFile.getName();
+				// === Start Game button removed (not in spec) ===
+//				// Change current file
+//				this.currentMap = MAPS_FOLDER + "/" + outFile.getName();
 			}
 
 		} catch (FileNotFoundException e1) {
@@ -309,8 +313,9 @@ public class Controller implements ActionListener, GUIInformation {
 				grid.redrawGrid();
 			}
 
-			// Change current file
-			this.currentMap = MAPS_FOLDER + "/" + selectedFile.getName();
+			// === Start Game button removed (not in spec) ===
+//			// Change current file
+//			this.currentMap = MAPS_FOLDER + "/" + selectedFile.getName();
 
 		} catch (Exception e) {
 			e.printStackTrace();

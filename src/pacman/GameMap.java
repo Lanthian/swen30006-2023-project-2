@@ -38,6 +38,8 @@ public class GameMap {
     // --- Constant(s) ---
     private static final Location.CompassDirection[] ANGLES = {Location.NORTH,
             Location.EAST,Location.SOUTH,Location.WEST};
+    private final static String LOGS_FOLDER = "Game Folder";
+
 
 
     // Constructor (loads in map xml file)
@@ -141,7 +143,7 @@ public class GameMap {
             // System.out.println(this.filename);      // todo - debug line
             String filename = this.filename.substring(this.filename.lastIndexOf("/") + 1);
             int number = Integer.parseInt(filename.split("\\D+")[0]);
-            BufferedWriter buf = new BufferedWriter(new FileWriter(number + "_ErrorMaplog.txt"));
+            BufferedWriter buf = new BufferedWriter(new FileWriter(LOGS_FOLDER + "/" + number + "_ErrorMaplog.txt"));
 
             // Checks starting point of pacman
             if (pacActors.size() == 0) {
@@ -163,7 +165,7 @@ public class GameMap {
             int i = 0;
 
             for (ArrayList<Location> portalArray : new ArrayList[]{portalsYellow, portalsWhite, portalsDarkGold, portalsDarkGray}) {
-                if (portalsYellow.size() != 2 && portalsYellow.size() != 0) {
+                if (portalArray.size() != 2 && portalArray.size() != 0) {
                     buf.write("[Level " + this.filename + " – portal " + portalColours.get(i) + " count is not 2:");
                     for (Location loc : portalArray) {
                         buf.write(" " + loc + ";");
