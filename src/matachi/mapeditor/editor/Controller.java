@@ -6,7 +6,8 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-import pacman.Driver;
+
+// Pacman package classes
 import pacman.Game;
 import pacman.GameMap;
 import pacman.GameState;

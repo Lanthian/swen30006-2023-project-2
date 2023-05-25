@@ -109,11 +109,11 @@ public class View {
 
 		txtWidth = new JTextField(Constants.MAP_WIDTH + "", 3);
 		txtWidth.getDocument().addDocumentListener(controller.updateSizeFields);
-		txtWidth.setEnabled(true);
+//		txtWidth.setEnabled(true);
 		txtHeight = new JTextField(Constants.MAP_HEIGHT + "", 3);
 		txtHeight.getDocument()
 				.addDocumentListener(controller.updateSizeFields);
-		txtHeight.setEnabled(true);
+//		txtHeight.setEnabled(true);
 		JButton updateSize = new JButton("Reset");
 		updateSize.addActionListener(controller);
 		updateSize.setActionCommand("update");
