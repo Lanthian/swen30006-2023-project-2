@@ -150,8 +150,10 @@ public class GameMap {
                 validity = false;
             } else if (pacActors.size() > 1) {
                 buf.write("[Level " + this.filename + " – more than one start for Pacman:");
-                for (Location loc : pacActors) {
-                    buf.write(" " + locFixer(loc) + ";");
+
+                for (int i=0; i< pacActors.size(); i++) {
+                    if (i!=0) buf.write(";");
+                    buf.write(" " + locFixer(pacActors.get(i)));
                 }
                 buf.write("]");
                 buf.newLine();
@@ -165,8 +167,9 @@ public class GameMap {
             for (ArrayList<Location> portalArray : new ArrayList[]{portalsYellow, portalsWhite, portalsDarkGold, portalsDarkGray}) {
                 if (portalArray.size() != 2 && portalArray.size() != 0) {
                     buf.write("[Level " + this.filename + " – portal " + portalColours.get(i) + " count is not 2:");
-                    for (Location loc : portalArray) {
-                        buf.write(" " + locFixer(loc) + ";");
+                    for (int j=0; j< portalArray.size(); j++) {
+                        if (j!=0) buf.write(";");
+                        buf.write(" " + locFixer(portalArray.get(j)));
                     }
                     buf.write("]");
                     buf.newLine();
@@ -197,8 +200,9 @@ public class GameMap {
             // (Gold)
             if (unreachableGold.size() > 0) {
                 buf.write("[Level " + this.filename + " – Gold not accessible:");
-                for (Location loc : unreachableGold) {
-                    buf.write(" " + locFixer(loc) + ";");
+                for (int j=0; j<unreachableGold.size(); j++) {
+                    if (j!=0) buf.write(";");
+                    buf.write(" " + locFixer(unreachableGold.get(j)));
                 }
                 buf.write("]");
                 buf.newLine();
@@ -208,8 +212,9 @@ public class GameMap {
             // (Pills)
             if (unreachablePills.size() > 0) {
                 buf.write("[Level " + this.filename + " – Pill not accessible:");
-                for (Location loc : unreachablePills) {
-                    buf.write(" " + locFixer(loc) + ";");
+                for (int j=0; j<unreachablePills.size(); j++) {
+                    if (j!=0) buf.write(";");
+                    buf.write(" " + locFixer(unreachablePills.get(j)));
                 }
                 buf.write("]");
                 buf.newLine();
