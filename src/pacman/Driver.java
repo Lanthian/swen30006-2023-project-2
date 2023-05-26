@@ -3,22 +3,19 @@ package pacman;
 import matachi.mapeditor.Main;
 
 public class Driver {
-    public static final String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
-    public static String TEST = "Game Folder"; // maps"; // ""maps"; TODO
+    public static String FOLDER_TEST = "Game Folder"; // maps"; // ""maps"; TODO
 
     /**
      * Starting point
-     * @pzaram args the command line arguments
+     * @param args the command line arguments
      */
 
     public static void main(String args[]) {
-        String propertiesPath = DEFAULT_PROPERTIES_PATH;
-
         // todo - remember to change args active reading
 
         // gets input for the startup
         String input = "";
-        input = TEST;
+        input = FOLDER_TEST;
         if (args.length > 0) {
             input = args[0];
         }

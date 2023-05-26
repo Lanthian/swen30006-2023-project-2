@@ -1,7 +1,6 @@
 // Gold.java
 package pacman;
 
-import ch.aplu.jgamegrid.GGBackground;
 import ch.aplu.jgamegrid.Location;
 
 

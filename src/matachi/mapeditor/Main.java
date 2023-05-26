@@ -112,7 +112,6 @@ public class Main {
 
 				// run map
 				Game currentGame;
-				int count = 0;
 				for (GameMap map : mapArrayList) {
 					currentGame = new Game(map, gameCallback, properties);
 					// Wait until game is done playing
@@ -120,10 +119,10 @@ public class Main {
 
 					if (currentGame.getGameState() == GameState.Win) {
 						// Load next map
-						//currentGame.endGame();
+						currentGame.endGame();
 					} else if (currentGame.getGameState() == GameState.Lose) {
 						// Stop loading maps
-						//currentGame.endGame();
+						currentGame.endGame();
 						break;
 					} else {
 						// Nonexistent game state returned

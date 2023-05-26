@@ -1,1 +1,0 @@
-[Level Tempfold/1SpecMap_Monsterless.xml – portal Yellow count is not 2: (0, 2); (19, 2); (19, 8);]

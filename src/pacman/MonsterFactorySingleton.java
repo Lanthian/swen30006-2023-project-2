@@ -1,4 +1,4 @@
-// MonsterFactory.java
+// MonsterFactorySingleton.java
 package pacman;
 
 public class MonsterFactorySingleton {

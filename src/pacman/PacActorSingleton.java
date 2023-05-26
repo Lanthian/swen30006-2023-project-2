@@ -20,8 +20,10 @@ public class PacActorSingleton extends Actor implements GGKeyRepeatListener
   private int nbPills = 0;
   private int score = 0;
   private Game game;
-  private ArrayList<Location> visitedList = new ArrayList<Location>();
-  private List<String> propertyMoves = new ArrayList<>();
+
+  // Below variables and associated methods are never used, but useful to have for later extension
+  private final ArrayList<Location> visitedList = new ArrayList<Location>();
+  private final List<String> propertyMoves = new ArrayList<>();
   private int propertyMoveIndex = 0;
   private final int listLength = 10;
   private int seed;
@@ -146,8 +148,11 @@ public class PacActorSingleton extends Actor implements GGKeyRepeatListener
       return true;
   }
 
-  // Helper function to find valid moves from a location    // todo - javadoc comment
-  // note the random order
+  /**
+   * Helper function to find valid moves from a location. Randomises order returned.
+   * @param loc Starting location of surrounding search
+   * @return ArrayList of valid neighbouring locations.
+   */
   public ArrayList<Location> getValidMoves(Location loc) {
     ArrayList<Location> validLocations = new ArrayList<>();
 

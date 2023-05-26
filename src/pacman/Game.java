@@ -42,6 +42,54 @@ public class Game extends GameGrid
       bg.fillCell(loc, Color.gray);
     }
 
+    // Load all other game elements in, including items, pacactor and monsters
+    loadGameElements(map, properties);
+
+    // Set pacActor movement and other monster uniques
+    addKeyRepeatListener(pacActorSingleton);
+    setKeyRepeatPeriod(150);
+
+
+    //Run the game
+    doRun();
+    show();
+
+    // Loop for game runtime
+    do {
+      // Collision is checked each time pacActor or Monster moves (not done here)
+      // Game winning (eat all pills) is checked too (not done here)
+      delay(10);
+    } while(pacActorSingleton.getGameState() == GameState.Active);
+    delay(120);
+
+    for (Monster monster : monsters) {
+      monster.setStopMoving(true);
+    }
+    Location endLocation = pacActorSingleton.getLocation();
+    pacActorSingleton.removeSelf();
+
+
+    String title = "";
+    if (pacActorSingleton.getGameState() == GameState.Lose) {
+      bg.setPaintColor(Color.red);
+      title = "GAME OVER";
+      addActor(new Actor("sprites/explosion3.gif"), endLocation);
+    } else if (pacActorSingleton.getGameState() == GameState.Win) {
+      bg.setPaintColor(Color.yellow);
+      title = "YOU WIN";
+    }
+    setTitle(title);
+    gameCallback.endOfGame(title);
+
+    doPause();
+  }
+
+  /**
+   * Function to load game elements for Game instance. Keeps code neat.
+   * @param map XML game elements loaded into arraylists and hashmaps. All level data.
+   * @param properties Pacman.IsAuto state and random seed.
+   */
+  private void loadGameElements(GameMap map, Properties properties) {
     // === Load portals ===
     // Iterate through portaltype, locationlist pairs
     for (Map.Entry<PortalType, ArrayList<Location>> entry : map.getPortals().entrySet()) {
@@ -56,13 +104,6 @@ public class Game extends GameGrid
       this.portalPairs.add(portal);
     }
     this.collidables.addAll(portalPairs);
-
-    // === Load pacActor ===
-    pacActorSingleton = PacActorSingleton.getInstance(this);
-    pacActorSingleton.setAuto(Boolean.parseBoolean(properties.getProperty("PacMan.isAuto")));
-    addActor(pacActorSingleton, map.getPacLocation());
-    pacActorSingleton.setSeed(seed);
-    pacActorSingleton.setSlowDown(3);
 
     // === Load items ===
     // Item array and factory to reduce redundant code later
@@ -94,53 +135,12 @@ public class Game extends GameGrid
     }
     this.collidables.addAll(monsters);
 
-
-
-    // Set pacActor movement and other monster uniques
-    addKeyRepeatListener(pacActorSingleton);
-    setKeyRepeatPeriod(150);
-
-
-    //Run the game
-    doRun();
-    show();
-    // Loop to look for collision in the application thread
-    // This makes it improbable that we miss a hit
-    boolean hasPacmanEatAllPills;
-    int maxPillsAndItems = countPillsAndItems();
-
-    do {
-      // Collision is checked each time pacActor or Monster moves (not done here)
-      // Game winning (eat all pills) is checked too (not done here)
-      delay(10);
-    } while(pacActorSingleton.getGameState() == GameState.Active);
-    delay(120);
-
-    for (Monster monster : monsters) {
-      monster.setStopMoving(true);
-    }
-    Location endLocation = pacActorSingleton.getLocation();
-    pacActorSingleton.removeSelf();
-
-
-    String title = "";
-    if (pacActorSingleton.getGameState() == GameState.Lose) {
-      bg.setPaintColor(Color.red);
-      title = "GAME OVER";
-      addActor(new Actor("sprites/explosion3.gif"), endLocation);
-    } else if (pacActorSingleton.getGameState() == GameState.Win) {
-      bg.setPaintColor(Color.yellow);
-      title = "YOU WIN";
-    }
-    setTitle(title);
-    gameCallback.endOfGame(title);
-
-    doPause();
-    // todo - find a way to terminate gamegrid
-  }
-
-  private int countPillsAndItems() {
-    return getRemainingLoot().size();
+    // === Load pacActor ===
+    pacActorSingleton = PacActorSingleton.getInstance(this);
+    pacActorSingleton.setAuto(Boolean.parseBoolean(properties.getProperty("PacMan.isAuto")));
+    addActor(pacActorSingleton, map.getPacLocation());
+    pacActorSingleton.setSeed(seed);
+    pacActorSingleton.setSlowDown(3);
   }
 
   public void updateActor(Actor actor, ActorType type) {
@@ -166,9 +166,14 @@ public class Game extends GameGrid
     }
   }
 
-  // Closes the game. Use with caution.
+  /**
+   * Closes the game. Use with caution.
+   */
   public void endGame() {
+    /* Below line is problematic on some computers, not on others. Opt for .hide() instead. Note that this means on
+    * large folder runs, many completed games will remain open, hidden from view. */
     this.getFrame().dispose();
+//    this.hide();     // todo
   }
 
   // -- Getters --

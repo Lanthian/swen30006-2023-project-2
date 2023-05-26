@@ -53,7 +53,9 @@ public class Controller implements ActionListener, GUIInformation {
 	private int gridHeight = Constants.MAP_HEIGHT;
 
 
-	private final static String MAPS_FOLDER = "Game Folder";
+	private final static String NO_INPUT_FILE = "";
+
+//	private final static String MAPS_FOLDER = "Game Folder";
 	// === Start Game button removed (not in spec) ===
 //	private final static String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
 //	private String currentMap;
@@ -97,7 +99,7 @@ public class Controller implements ActionListener, GUIInformation {
 			saveFile();
 		} else if (e.getActionCommand().equals("load")) {
 			// no file present, opens the window loader
-			String input = "";	// todo
+			String input = NO_INPUT_FILE;
 			loadFile(input);
 		} else if (e.getActionCommand().equals("update")) {
 			updateGrid(gridWith, gridHeight);
@@ -121,7 +123,7 @@ public class Controller implements ActionListener, GUIInformation {
 //					// Wait for game to finish
 //					currentGame.show();
 //					while (currentGame.getGameState() == GameState.Active);
-////					currentGame.hide(); // todo
+//					currentGame.endGame();
 //				}
 //			}
 		}
@@ -230,12 +232,7 @@ public class Controller implements ActionListener, GUIInformation {
 	public void loadFile(String filelocation) {
 		SAXBuilder builder = new SAXBuilder();
 		// checks if filelocation is blank or not
-		boolean hasFile;
-		if (filelocation.equals("")) {
-			hasFile = false;
-		} else {
-			hasFile = true;
-		}
+		boolean hasFile = !filelocation.equals(NO_INPUT_FILE);
 		try {
 			File selectedFile;
 			if (hasFile) {
