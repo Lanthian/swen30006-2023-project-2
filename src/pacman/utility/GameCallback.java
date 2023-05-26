@@ -11,7 +11,7 @@ import java.io.IOException;
  * Please do not change this class. This class is used for testing and your code needs to print the correct output to pass the test
  */
 public class GameCallback {
-    private final String logFilePath = "Log.txt";
+    private String logFilePath = "Log.txt";
     private FileWriter fileWriter = null;
 
     public GameCallback() {

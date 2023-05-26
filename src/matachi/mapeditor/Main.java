@@ -17,7 +17,7 @@ import java.util.*;
 public class Main {
 	static String log;
 	private static FileWriter fileWriter = null;
-	private static final String logFilePath = "GameCheckingLog.txt";
+	private static String logFilePath = "GameCheckingLog.txt";
 	public static final String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
 
 	public static void writeString(String str) {
