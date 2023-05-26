@@ -17,7 +17,7 @@ import java.util.*;
 public class Main {
 	static String log;
 	private static FileWriter fileWriter = null;
-	private static String logFilePath = "GameCheckingLog.txt";
+	private static final String logFilePath = "GameCheckingLog.txt";
 	public static final String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
 
 	public static void writeString(String str) {
@@ -30,9 +30,8 @@ public class Main {
 		}
 	}
 
-	public static void main(String[] args) {
-		String propertiesPath = DEFAULT_PROPERTIES_PATH;
-		final Properties properties = PropertiesLoader.loadPropertiesFile(propertiesPath);
+	public static void main(String args[]) {
+		final Properties properties = PropertiesLoader.loadPropertiesFile(DEFAULT_PROPERTIES_PATH);
 		GameCallback gameCallback = new GameCallback();
 
 		// write to log file
