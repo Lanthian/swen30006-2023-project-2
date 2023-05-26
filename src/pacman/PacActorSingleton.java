@@ -2,6 +2,8 @@
 // Used for PacMan
 package pacman;
 
+import constants.Constants;
+
 import ch.aplu.jgamegrid.*;
 
 import java.awt.event.KeyEvent;
@@ -35,7 +37,7 @@ public class PacActorSingleton extends Actor implements GGKeyRepeatListener
 
   // Constructor
   private PacActorSingleton() {
-    super(true, "sprites/pacpix.gif", nbSprites);   // Rotatable
+    super(true, Constants.SPRITE_PATH+"pacpix.gif", nbSprites);   // Rotatable
   }
 
   // Singleton retriever

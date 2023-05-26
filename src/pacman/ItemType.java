@@ -1,6 +1,8 @@
 // ItemType.java enum
 package pacman;
 
+import constants.Constants;
+
 import java.awt.*;
 
 public enum ItemType {
@@ -8,13 +10,11 @@ public enum ItemType {
     Pill,
     Ice;
 
-    private static final String SPRITE_FOLDER = "sprites/";
-
     public String getImageName() {
         switch (this) {
-            case Gold: return SPRITE_FOLDER + "gold.png";
+            case Gold: return Constants.SPRITE_PATH + "gold.png";
             // No image for pill
-            case Ice: return SPRITE_FOLDER + "ice.png";
+            case Ice: return Constants.SPRITE_PATH + "ice.png";
             default: {
                 assert false;
             }

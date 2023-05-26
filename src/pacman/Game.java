@@ -1,6 +1,7 @@
 package pacman;
 
 import ch.aplu.jgamegrid.*;
+import constants.Constants;
 import pacman.utility.GameCallback;
 
 import java.awt.*;
@@ -73,7 +74,7 @@ public class Game extends GameGrid
     if (pacActorSingleton.getGameState() == GameState.Lose) {
       bg.setPaintColor(Color.red);
       title = "GAME OVER";
-      addActor(new Actor("sprites/explosion3.gif"), endLocation);
+      addActor(new Actor(Constants.SPRITE_PATH+"explosion3.gif"), endLocation);
     } else if (pacActorSingleton.getGameState() == GameState.Win) {
       bg.setPaintColor(Color.yellow);
       title = "YOU WIN";

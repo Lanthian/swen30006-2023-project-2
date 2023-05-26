@@ -1,5 +1,7 @@
 package matachi.mapeditor;
 
+import constants.Constants;
+
 import matachi.mapeditor.editor.Controller;
 import pacman.Game;
 import pacman.GameMap;
@@ -18,7 +20,7 @@ public class Main {
 	static String log;
 	private static FileWriter fileWriter = null;
 	private static String logFilePath = "GameCheckingLog.txt";
-	public static final String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
+
 
 	public static void writeString(String str) {
 		try {
@@ -31,7 +33,7 @@ public class Main {
 	}
 
 	public static void main(String args[]) {
-		final Properties properties = PropertiesLoader.loadPropertiesFile(DEFAULT_PROPERTIES_PATH);
+		final Properties properties = PropertiesLoader.loadPropertiesFile(Constants.DEFAULT_PROPERTIES_PATH);
 		GameCallback gameCallback = new GameCallback();
 
 		// write to log file

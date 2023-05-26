@@ -3,6 +3,7 @@ package pacman;
 
 import ch.aplu.jgamegrid.Actor;
 import ch.aplu.jgamegrid.Location;
+import constants.Constants;
 
 
 class Portal extends Actor {
@@ -12,7 +13,7 @@ class Portal extends Actor {
 
     // --- Constructor ---
     public Portal(Game game, PortalType type, Location loc) {
-        super("sprites/" + type.getImageName());
+        super(Constants.SPRITE_PATH + type.getImageName());
 
         this.type = type;           // Portal type is final
         this.game = game;
