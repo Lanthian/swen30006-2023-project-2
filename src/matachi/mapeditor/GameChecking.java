@@ -5,7 +5,7 @@ import java.util.*;
 
 
 public class GameChecking {
-    // checks if folder
+    // checks if input is a folder , returns boolean
     public static boolean isFolder(String input) {
         File file = new File(input);
         return file.isDirectory();
@@ -17,6 +17,7 @@ public class GameChecking {
         File[] files = folder.listFiles();
         List<String> xmlFiles = new ArrayList<>();
 
+        // reads only files that have xml at the end and has a digit at the start of the name
         for (File file : files) {
             String filename = file.getName();
             if (filename.endsWith(".xml") & Character.isDigit(filename.charAt(0))) {
@@ -27,11 +28,12 @@ public class GameChecking {
     }
 
     public static String checkDuplicates(List<String> mapList) {
+        // gets the int of the first file
         int number = Integer.parseInt(mapList.get(0).split("\\D+")[0]);
         Set<String> duplicateMaps = new HashSet<>();
 
         for (int i = 1; i < mapList.size(); i ++) {
-            // gets number
+            // gets number in list
             int indexnumber = Integer.parseInt(mapList.get(i).split("\\D+")[0]);
             if (number == indexnumber) {
                 // adds the previous dupe
@@ -43,6 +45,7 @@ public class GameChecking {
 
             }
             else {
+                // updates the number to check with
                 number = Integer.parseInt(mapList.get(i).split("\\D+")[0]);
             }
         }
@@ -50,6 +53,7 @@ public class GameChecking {
         StringBuilder duplicates = new StringBuilder();
         // sorts array first
         List<String> duplicateString = new ArrayList<>(duplicateMaps);
+        // sends back string list of duplicate files
         Collections.sort(duplicateString);
         for (String duplicate : duplicateString) {
             if (duplicates.length() > 0) {
@@ -59,7 +63,6 @@ public class GameChecking {
         }
 
         return duplicates.toString();
-            
     }
 
 

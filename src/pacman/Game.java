@@ -11,7 +11,6 @@ import java.util.Properties;
 
 public class Game extends GameGrid
 {
-  protected PacManGameGrid grid = new PacManGameGrid(nbHorzCells, nbVertCells);
   // === Actors ===
   // Retrieve singleton pacActor, setting current game to this instance
   protected PacActorSingleton pacActorSingleton;
