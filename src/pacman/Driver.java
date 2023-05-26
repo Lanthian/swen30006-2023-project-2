@@ -3,8 +3,6 @@ package pacman;
 import matachi.mapeditor.Main;
 
 public class Driver {
-    public static String FOLDER_TEST = "Game Folder"; // maps"; // ""maps"; TODO
-
     /**
      * Starting point
      * @param args the command line arguments
@@ -15,7 +13,6 @@ public class Driver {
 
         // gets input for the startup
         String input = "";
-        input = FOLDER_TEST;
         if (args.length > 0) {
             input = args[0];
         }

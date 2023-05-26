@@ -1,6 +1,8 @@
 // GameMap.java
 package pacman;
 
+import constants.Constants;
+
 import ch.aplu.jgamegrid.Location;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -38,7 +40,7 @@ public class GameMap {
     // --- Constant(s) ---
     private static final Location.CompassDirection[] ANGLES = {Location.NORTH,
             Location.EAST,Location.SOUTH,Location.WEST};
-    private final static String LOGS_FOLDER = "Game Folder";
+
 
 
     // Constructor (loads in map xml file)
@@ -141,7 +143,7 @@ public class GameMap {
             // Safe to assume filename is valid, as game checking done prior
             String filename = this.filename.substring(this.filename.lastIndexOf("/") + 1);
             int number = Integer.parseInt(filename.split("\\D+")[0]);
-            BufferedWriter buf = new BufferedWriter(new FileWriter(LOGS_FOLDER + "/" + number + "_ErrorMaplog.txt"));
+            BufferedWriter buf = new BufferedWriter(new FileWriter(Constants.LOGS_FOLDER + number + "_ErrorMaplog.txt"));
 
             // Checks starting point of pacman
             if (pacActors.size() == 0) {

@@ -1,4 +1,5 @@
-package constants;// Constants.java
+// Constants.java
+package constants;
 
 public final class Constants {
     // Empty private constructor to stop instantiation
@@ -6,5 +7,8 @@ public final class Constants {
     }
 
     public static final String SPRITE_PATH = "sprites/game/";
+    public static final String TILE_PATH = "sprites/editor/";
     public static final String DEFAULT_PROPERTIES_PATH = "properties/test.properties";
+
+    public final static String LOGS_FOLDER = "Game Folder/";
 }
