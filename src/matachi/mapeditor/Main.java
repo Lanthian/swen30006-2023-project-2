@@ -110,11 +110,10 @@ public class Main {
 
 					if (currentGame.getGameState() == GameState.Win) {
 						// Load next map
-						// todo instead of hide -> dispose
-						currentGame.endGame();
+						//currentGame.endGame();
 					} else if (currentGame.getGameState() == GameState.Lose) {
 						// Stop loading maps
-						currentGame.endGame();
+						//currentGame.endGame();
 						break;
 					} else {
 						// Nonexistent game state returned

@@ -8,7 +8,7 @@ public class Driver {
 
     /**
      * Starting point
-     * @param args the command line arguments
+     * @pzaram args the command line arguments
      */
 
     public static void main(String args[]) {
