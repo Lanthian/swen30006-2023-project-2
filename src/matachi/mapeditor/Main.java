@@ -69,7 +69,18 @@ public class Main {
 			}
 
 			// then need to sort string numerically
-			Collections.sort(xmlFiles);
+			Comparator<String> fileNameCompare = new Comparator<String>() {
+				@Override
+				public int compare(String o1, String o2) {
+					int number1 = Integer.parseInt(o1.split("\\D+")[0]);
+					int number2 = Integer.parseInt(o2.split("\\D+")[0]);
+
+					return Integer.compare(number1,number2);
+				}
+			};
+
+			// sorts folder
+			Collections.sort(xmlFiles, fileNameCompare);
 			if (xmlFiles.size() > 1) {
 				String duplicates = GameChecking.checkDuplicates(xmlFiles);
 				// if there are duplicates
@@ -84,11 +95,10 @@ public class Main {
 				// -- Check for invalid levels --
 				// array of maps string
 				// need to convert string to array maps
-				System.out.println(xmlFiles);
+//				System.out.println(xmlFiles);
 				ArrayList<GameMap> mapArrayList = new ArrayList<>();
 				for (String Stringfile : xmlFiles) {
 					String fullPath = rootPath + "/" + Stringfile;
-					System.out.println(fullPath);
 					GameMap map = new GameMap(fullPath);
 					if (!map.isValid()) {
 						// if not valid open editor for that map

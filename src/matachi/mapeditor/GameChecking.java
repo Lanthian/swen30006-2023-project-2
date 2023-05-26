@@ -64,7 +64,4 @@ public class GameChecking {
 
         return duplicates.toString();
     }
-
-
-
 }
