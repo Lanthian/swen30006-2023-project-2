@@ -1,6 +1,4 @@
-package pacman;
-
-import matachi.mapeditor.Main;
+package constants;
 
 public class Driver {
     /**

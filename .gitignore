@@ -3,8 +3,8 @@
 .DS_Store
 out/
 dist/
-Log.txt
-GameCheckingLog.txt
+pacman/Log.txt
+pacman/GameCheckingLog.txt
 Game Folder/
 .idea
 

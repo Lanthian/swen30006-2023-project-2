@@ -1,7 +1,6 @@
-package matachi.mapeditor;
+package constants;
 
-import constants.Constants;
-
+import matachi.mapeditor.GameChecking;
 import matachi.mapeditor.editor.Controller;
 import pacman.Game;
 import pacman.GameMap;
@@ -45,7 +44,7 @@ public class Main {
 		// gets input
 		String input = "";
 		boolean isFolder;
-		if (args.length > 0) {
+		if (args.length > 0 && !input.equals(args[0])) {
 			input = args[0];
 			isFolder = GameChecking.isFolder(input);
 		}
