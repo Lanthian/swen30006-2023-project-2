@@ -19,8 +19,6 @@ import java.util.*;
 public class Main {
 	static String log;
 	private static FileWriter fileWriter = null;
-	private static String logFilePath = "GameCheckingLog.txt";
-
 
 	public static void writeString(String str) {
 		try {
@@ -38,7 +36,7 @@ public class Main {
 
 		// write to log file
 		try {
-			fileWriter = new FileWriter(logFilePath);
+			fileWriter = new FileWriter(Constants.GAME_CHECKING_LOG_PATH);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

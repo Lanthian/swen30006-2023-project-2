@@ -6,6 +6,8 @@ dist/
 Log.txt
 GameCheckingLog.txt
 Game Folder/
+.idea
+
 
 
 # Gradle and Maven with auto-import

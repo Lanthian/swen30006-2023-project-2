@@ -1,7 +1,8 @@
 package pacman;
 
-import ch.aplu.jgamegrid.*;
 import constants.Constants;
+
+import ch.aplu.jgamegrid.*;
 import pacman.utility.GameCallback;
 
 import java.awt.*;

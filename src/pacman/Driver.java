@@ -9,8 +9,6 @@ public class Driver {
      */
 
     public static void main(String args[]) {
-        // todo - remember to change args active reading
-
         // gets input for the startup
         String input = "";
         if (args.length > 0) {
