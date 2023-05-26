@@ -15,7 +15,7 @@ public class MonsterFactorySingleton {
     }
 
     // Factory singleton retriever
-    public static MonsterFactorySingleton getMonsterFactory() {
+    public static MonsterFactorySingleton getFactory() {
         if (singleton == null) {
             singleton = new MonsterFactorySingleton();
         }
@@ -30,17 +30,16 @@ public class MonsterFactorySingleton {
      */
     public Monster makeMonster(Game game, MonsterType type) {
         Monster monster;
-        switch(type) {
-            case Troll:
-                monster = new TrollMonster(game, type);
-                break;
-            case TX5:
+        switch (type) {
+            case Troll -> monster = new TrollMonster(game, type);
+            case TX5 -> {
                 monster = new TX5Monster(game, type);
                 monster.stopMoving(TX5_DELAY);
-                break;
-            default:
+            }
+            default -> {
                 // Monster type does not exist
                 return null;
+            }
         }
         monster.setSeed(game.getSeed());
         monster.setSlowDown(MONSTER_SLOWDOWN);

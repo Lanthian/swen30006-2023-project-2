@@ -4,22 +4,11 @@ package pacman;
 import ch.aplu.jgamegrid.GGBackground;
 import ch.aplu.jgamegrid.Location;
 
-import java.awt.*;
-
 
 public class Ice extends Item {
-    // --- Attributes & Constants ---
-    private final static Color ICE_COLOUR = Color.blue;
-    private final static String SPRITE = "sprites/ice.png";
-    private final static int DEFAULT_VALUE = 0;
-
     // --- Constructor ---
-    public Ice(Game game, GGBackground bg, Location location) {
-        super(SPRITE, game, location);
-        this.colour = ICE_COLOUR;
-        // Sets item value
-        this.value = DEFAULT_VALUE;
-        plotDot(bg, location);
+    public Ice(ItemType type, Game game, Location location) {
+        super(type, game, location);
     }
 
 

@@ -317,14 +317,14 @@ public class GameMap {
     public ArrayList<Location> getWalls() {
         return walls;
     }
-    public ArrayList<Location> getPills() {
-        return pills;
-    }
-    public ArrayList<Location> getGold() {
-        return gold;
-    }
-    public ArrayList<Location> getIce() {
-        return ice;
+
+    public HashMap<ItemType, ArrayList<Location>> getItems() {
+        HashMap<ItemType, ArrayList<Location>> items = new HashMap<>();
+        items.put(ItemType.Gold, gold);
+        items.put(ItemType.Pill, pills);
+        items.put(ItemType.Ice, ice);
+
+        return items;
     }
 
     public HashMap<MonsterType, ArrayList<Location>> getMonsters() {

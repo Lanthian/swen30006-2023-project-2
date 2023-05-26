@@ -13,16 +13,22 @@ public abstract class Item extends Actor implements ActorCollidable {
     private final static Color NO_ITEM = Color.lightGray;
 
     protected Game game;
+    protected ItemType type;
     protected Color colour;
     protected int value;
     protected boolean eaten = false;
 
 
     // --- Constructor with sprite  ---
-    public Item(String sprite, Game game, Location location) {
-        super(sprite);
+    public Item(ItemType type, Game game, Location location) {
+        super(type.getImageName());
         // Alters assigned game board accordingly
         this.game = game;
+        this.type = type;
+
+        this.colour = this.type.getColour();
+        // Sets item value
+        this.value = this.type.getValue();
 
         if (game != null) {
             this.game.addActor(this, location);
@@ -30,9 +36,14 @@ public abstract class Item extends Actor implements ActorCollidable {
         }
     }
     // --- Constructor w/out sprite ---
-    public Item(Game game, Location location) {
+    public Item(ItemType type, Game game, Location location, String spriteless) {
         // Alters assigned game board accordingly
         this.game = game;
+        this.type = type;
+
+        this.colour = this.type.getColour();
+        // Sets item value
+        this.value = this.type.getValue();
 
         if (game != null) {
             this.game.addActor(this, location);

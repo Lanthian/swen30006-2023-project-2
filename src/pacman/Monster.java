@@ -18,7 +18,7 @@ public abstract class Monster extends Actor implements ActorCollidable
 
   public Monster(Game game, MonsterType type)
   {
-    super("sprites/" + type.getImageName());
+    super(type.getImageName());
     this.game = game;
     this.type = type;
   }

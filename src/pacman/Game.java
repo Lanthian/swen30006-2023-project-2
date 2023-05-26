@@ -14,18 +14,16 @@ public class Game extends GameGrid
   protected PacManGameGrid grid = new PacManGameGrid(nbHorzCells, nbVertCells);
   // === Actors ===
   // Retrieve singleton pacActor, setting current game to this instance
-  protected PacActorSingleton pacActorSingleton = PacActorSingleton.getInstance(this);
+  protected PacActorSingleton pacActorSingleton;
   private final ArrayList<ActorCollidable> collidables = new ArrayList<>();
 
-  private ArrayList<Monster> monsters = new ArrayList<>();
-  private ArrayList<Item> items = new ArrayList<>();
-  private ArrayList<Item> loot = new ArrayList<>();       // Subset of items
-  private ArrayList<PortalPair> portalPairs = new ArrayList<>();
+  private final ArrayList<Monster> monsters = new ArrayList<>();
+  private final ArrayList<Item> items = new ArrayList<>();
+  private final ArrayList<Item> loot = new ArrayList<>();       // Subset of items
+  private final ArrayList<PortalPair> portalPairs = new ArrayList<>();
 
-  private GameCallback gameCallback;
+  private final GameCallback gameCallback;
   private int seed;
-  private ArrayList<Location> propertyPillLocations = new ArrayList<>();
-  private static ArrayList<Location> propertyGoldLocations = new ArrayList<>();
 
   public Game(GameMap map, GameCallback gameCallback, Properties properties)
   {
@@ -61,29 +59,31 @@ public class Game extends GameGrid
     this.collidables.addAll(portalPairs);
 
     // === Load pacActor ===
+    pacActorSingleton = PacActorSingleton.getInstance(this);
     pacActorSingleton.setAuto(Boolean.parseBoolean(properties.getProperty("PacMan.isAuto")));
     addActor(pacActorSingleton, map.getPacLocation());
+    pacActorSingleton.setSeed(seed);
+    pacActorSingleton.setSlowDown(3);
 
     // === Load items ===
-    for (Location loc : map.getGold()) {
-      Gold gold = new Gold(this, bg, loc);
-      this.items.add(gold);
-      this.loot.add(gold);
-    }
-    for (Location loc : map.getPills()) {
-      Pill pill = new Pill(this, bg, loc);
-      this.items.add(pill);
-      this.loot.add(pill);
-    }
-    for (Location loc : map.getIce()) {
-      Ice ice = new Ice(this, bg, loc);
-      this.items.add(ice);
+    // Item array and factory to reduce redundant code later
+    ItemFactorySingleton iFactory = ItemFactorySingleton.getFactory();
+    // Iterate through itemtype, locationlist pairs
+    for (Map.Entry<ItemType, ArrayList<Location>> entry : map.getItems().entrySet()) {
+      // Iterate through locations and add monsters to the game
+      for (Location loc : entry.getValue()) {
+        Item item = iFactory.makeItem(entry.getKey(), this, loc);
+        this.items.add(item);
+
+        // Store and track loot items in an additional array
+        if (entry.getKey().isLoot()) this.loot.add(item);
+      }
     }
     this.collidables.addAll(items);
 
     // === Load monsters ===
     // Monster array and factory to reduce redundant code later
-    MonsterFactorySingleton mFactory = MonsterFactorySingleton.getMonsterFactory();
+    MonsterFactorySingleton mFactory = MonsterFactorySingleton.getFactory();
     // Iterate through monstertype, locationlist pairs
     for (Map.Entry<MonsterType, ArrayList<Location>> entry : map.getMonsters().entrySet()) {
       // Iterate through locations and add monsters to the game
@@ -95,11 +95,7 @@ public class Game extends GameGrid
     }
     this.collidables.addAll(monsters);
 
-    // Setup Random seeds and speed for pacActor
-    this.seed = Integer.parseInt(properties.getProperty("seed"));
 
-    pacActorSingleton.setSeed(seed);
-    pacActorSingleton.setSlowDown(3);
 
     // Set pacActor movement and other monster uniques
     addKeyRepeatListener(pacActorSingleton);
